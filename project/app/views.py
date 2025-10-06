@@ -18,31 +18,6 @@ def loginPage(request):
     return render(request, 'login.html')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def artistPage(request):
     return render(request, 'artist.html')
 
