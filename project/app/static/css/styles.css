@@ -1,0 +1,46 @@
+.galeria-deslizable-wrapper {
+  overflow-x: auto;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 1rem;
+}
+
+.galeria-deslizable {
+  display: flex;
+  gap: 2rem;
+  user-select: none; /* evita selección accidental */
+}
+
+.foto-item {
+  flex: 0 0 auto; /* evita que se reduzcan las fotos */
+  scroll-snap-align: start;
+  text-align: center;
+}
+
+.foto-circular {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.foto-circular:hover {
+  transform: scale(1.05);
+}
+
+.nombre-foto {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Responsivo: fotos más grandes en pantallas grandes */
+@media (min-width: 1200px) {
+  .foto-circular {
+    width: 220px;
+    height: 220px;
+  }
+}
+
