@@ -11,6 +11,8 @@ def loginPage(request):
             return redirect("user")
         elif username == "artist" and password == "artist123":
             return redirect("artist")
+        elif username == "admin" and password == "admin123":
+            return redirect("admin")
         else:
             error_msg = "Invalid credentials, please try again."
             return render(request, "login.html", {"error": error_msg})
@@ -23,3 +25,9 @@ def artistPage(request):
 
 def userPage(request):
     return render(request, 'user.html')
+
+def ejemplo(request):
+    return render(request, 'ejercicio10.html')
+
+def admin(request):
+    return render(request, 'admin.html')
