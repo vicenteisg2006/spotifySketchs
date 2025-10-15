@@ -12,7 +12,7 @@ def loginPage(request):
         elif username == "artist" and password == "artist123":
             return redirect("artist")
         elif username == "admin" and password == "admin123":
-            return redirect("admin")
+            return redirect("dashboard")
         else:
             error_msg = "Invalid credentials, please try again."
             return render(request, "login.html", {"error": error_msg})
