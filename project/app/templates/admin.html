@@ -12,9 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        #Chart1, #Chart2, #Chart3, #Chart4, #Chart5 {
-            width: 200px;
-            height: 200px;
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 2rem;
         }
     </style>
 
@@ -34,53 +35,58 @@
     </nav>
 
     <div class="container mt-4">
-        <h2 class="display-2"><strong>Welcome, Admin</strong></h2>
-        <p class="lead">Take a look at the new app stats.</p>
+        <h2 class="display-4"><strong>Bienvenido, Admin</strong></h2>
+        <p class="lead">Estadísticas de usuarios</p>
     </div>
 
     <div class="container mt-5">
 
         <!-- Fila 1-->
-        <div class="row mt-4">
+        <div class="row">
 
-            <!-- Columna1-->
+            <!-- Columna 1-->
             <div class="col-md-6">
-                <h2> nombre grafico</h2>
-                <canvas id="Chart1"></canvas>
+                <div class="chart-container">
+                    <canvas id="Chart1"></canvas>
+                </div>
             </div>
 
             <!-- Columna 2-->
             <div class="col-md-6">
-                <h2> nombre grafico</h2>
-                <canvas id="Chart2"></canvas>
+                <div class="chart-container">
+                    <canvas id="Chart2"></canvas>
+                </div>
             </div>
 
         </div>
 
         <!-- Fila 2 -->
-        <div class="row mt-4">
+        <div class="row">
 
-            <!-- Columna1-->
+            <!-- Columna 1-->
             <div class="col-md-6">
-                <h2> nombre grafico</h2>
-                <canvas id="Chart3"></canvas>
+                <div class="chart-container">
+                    <canvas id="Chart3"></canvas>
+                </div>
             </div>
 
             <!-- Columna 2-->
             <div class="col-md-6">
-                <h2> nombre grafico</h2>
-                <canvas id="Chart4"></canvas>
+                <div class="chart-container">
+                    <canvas id="Chart4"></canvas>
                 </div>
+            </div>
 
         </div>
 
         <!-- Fila 3 -->
-        <div class="row mt-4">
+        <div class="row">
 
-            <!-- Columna1-->
-            <div class="col-md-12">
-                <h2> nombre grafico</h2>
-                <canvas id="Chart5"></canvas>
+            <!-- Columna 1-->
+            <div class="col-md-6 offset-md-3">
+                <div class="chart-container">
+                    <canvas id="Chart5"></canvas>
+                </div>
             </div>
 
         </div>
@@ -113,6 +119,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'top',
@@ -151,13 +158,14 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'top',
           },
           title: {
             display: true,
-            text: '% usuarios premiun'
+            text: '% usuarios premium'
           }
         }
       }
@@ -189,6 +197,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'top',
@@ -227,6 +236,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'top',
@@ -265,13 +275,14 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'top',
           },
           title: {
             display: true,
-            text: 'Variación artista'
+            text: 'Variación de artista'
           }
         }
       }
