@@ -52,11 +52,11 @@
 #carouselExampleAutoplaying .carousel-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* rellena el contenedor recortando si es necesario */
+  object-fit: cover; 
 }
 
 
-/* Responsivo: fotos más grandes en pantallas grandes */
+
 @media (min-width: 1200px) {
   .foto-circular {
     width: 220px;
