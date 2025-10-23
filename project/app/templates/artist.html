@@ -1,4 +1,6 @@
 {% load static %}
+{% load humanize %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -74,8 +76,8 @@
 
     <!-- Header -->
     <div class="container mt-5">
-        <h2 class="display-2 mb-3">Bienvenido, <span style="color:#1db954;">Artista</span></h2>
-        <p class="lead text-secondary">Track your performance, understand your audience, and grow your music.</p>
+        <h2 class="display-2 mb-3">Bienvenido, <span style="color:#1db954;">Dua Lipa</span></h2>
+        <p class="lead text-secondary">Rastrea tu desempeño, conoce a tu público y conecta.</p>
     </div>
 
     <!-- Stats -->
@@ -84,19 +86,19 @@
             <div class="col-md-4">
                 <div class="card p-3 mb-4">
                     <h5 class="card-title">Total Streams</h5>
-                    <p class="display-5">1,234,567</p>
+                    <p class="display-5">{{ total_streams|intcomma }}</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card p-3 mb-4">
                     <h5 class="card-title">Monthly Listeners</h5>
-                    <p class="display-5">456,789</p>
+                    <p class="display-5">{{ monthly_listeners|intcomma }}</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card p-3 mb-4">
                     <h5 class="card-title">Followers</h5>
-                    <p class="display-5">123,456</p>
+                    <p class="display-5">{{ followers|intcomma }}</p>
                 </div>
             </div>
         </div>
@@ -114,16 +116,17 @@
 
             <div class="col-md-4">
                 <div class="card p-3 mb-4">
-                    <h5 class="card-title">Top Songs</h5>
+            
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Song 1 - 500k</li>
-                        <li class="list-group-item">Song 2 - 400k</li>
-                        <li class="list-group-item">Song 3 - 300k</li>
-                        <li class="list-group-item">Song 4 - 200k</li>
-                        <li class="list-group-item">Song 5 - 100k</li>
+                        {% for song in top_songs %}
+                        <li class="list-group-item">
+                            {{ song.name }} — {{ song.streams|intcomma }} streams
+                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
+
         </div>
     </div>
 

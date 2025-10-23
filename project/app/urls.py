@@ -16,4 +16,5 @@ urlpatterns = [
 
     #prototipos
     path('Anne-Marie/', views.annemarie, name='AnneMarie'),
+
 ]

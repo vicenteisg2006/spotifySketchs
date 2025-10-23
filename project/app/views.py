@@ -26,7 +26,24 @@ def loginPage(request):
 
 #Artista generico
 def artistPage(request):
-    return render(request, 'artist.html')
+        context = {
+        'artist_name': 'Dua Lipa',
+        'total_streams': 1234567,
+        'monthly_listeners': 456789,
+        'followers': 123456,
+        'top_songs': [
+            {'name': 'Levitating', 'streams': 500000},
+            {'name': 'Don’t Start Now', 'streams': 400000},
+            {'name': 'Dance the Night', 'streams': 300000},
+            {'name': 'New Rules', 'streams': 200000},
+            {'name': 'Hallucinate', 'streams': 100000},
+        ],
+        'streams_chart': {
+            'labels': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            'values': [120000, 150000, 170000, 190000, 210000, 260000, 300000],
+        }
+    }
+        return render(request, 'artist.html', context)
 
 #Usuario
 def userPage(request):
@@ -37,7 +54,7 @@ def admin(request):
     return render(request, 'admin.html')
 
 
-#jose tomas henriquez
+#Playlist
 def playlist(request):
     return render(request, 'playlist.html')
 
@@ -46,3 +63,6 @@ def playlist(request):
 #vicente 
 def annemarie(request):
     return render(request, 'am.html')
+
+from django.shortcuts import render
+
