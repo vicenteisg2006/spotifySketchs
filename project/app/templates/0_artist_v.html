@@ -1,0 +1,153 @@
+<!-- LLamada a base KA -->
+{% extends 'baseKA.html' %}
+{% block title %} Spotify Artist: {{artist_name}} {% endblock %}
+
+<!-- Contenido especifico Artista -->
+{% block content %}
+{% load static %}
+{% load humanize %}
+
+    <!-- Header -->
+    <div class="container mt-5">
+        <h2 class="display-2 mb-3">Bienvenido, <span style="color:#1db954;">{{artist_name}}</span></h2>
+        <p class="lead text-secondary">Rastrea tu desempeño, conoce a tu público y conecta.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="container mt-4">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="card p-3 mb-4">
+                    <h5 class="card-title">Total Streams</h5>
+                    <p class="display-5">{{ total_streams|intcomma }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 mb-4">
+                    <h5 class="card-title">Monthly Listeners</h5>
+                    <p class="display-5">{{ monthly_listeners|intcomma }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 mb-4">
+                    <h5 class="card-title">Followers</h5>
+                    <p class="display-5">{{ followers|intcomma }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts & Lists -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card p-3 mb-4">
+                    <h5 class="card-title">Monthly Streams Trend</h5>
+                    <canvas id="streamsChart"></canvas>
+                    <canvas id="continentalChart" class="mt-4"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card p-3 mb-4">
+            
+                    <ul class="list-group list-group-flush">
+                        {% for song in top_songs %}
+                        <li class="list-group-item">
+                            {{ song.name }} — {{ song.streams|intcomma }} streams
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const streams_chart = JSON.parse('{{ streams_chart|escapejs }}');
+        const continental_data = JSON.parse('{{ continental_data|escapejs }}');
+
+        const ctx1 = document.getElementById('streamsChart');
+        const ctx2 = document.getElementById('continentalChart');
+
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: streams_chart.labels,
+                datasets: [{
+                    label: 'STREAMS',
+                    data: streams_chart.values,
+                    borderColor: '#1db954',
+                    tension: 0.3,
+                    fill: true,
+                    backgroundColor: 'rgba(29,185,84,0.1)'
+                    }]
+                },
+            options: {
+                    plugins: {
+                        legend: { labels: { color: 'white' } },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => `${ctx.parsed.y.toLocaleString()} streams`
+                                }
+                            }
+                        },
+                    scales: {
+                        x: { ticks: { color: '#ccc' } },
+                        y: { ticks: { color: '#ccc' } }
+                    },
+                    onHover: (event, chartElement) => {
+                        if (chartElement.length > 0) {
+                            const index = chartElement[0].index;
+                            const month = streams_chart.labels[index];
+                            updateContinentalChart(month);
+                            }
+                        }
+                    }
+        });
+
+        let continentalChart =  null;
+
+        function updateContinentalChart(month) {
+            const data = continental_data[month];
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+
+            if (continentalChart) {
+                continentalChart.destroy();
+            } 
+            
+            continentalChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                            label: `Streams por Continente en ${month}`,
+                            data: values,
+                            backgroundColor: '#1db954'
+                        }]
+                    },
+                options: {
+                    plugins: {
+                        legend: { labels: { color: 'white' } },
+                        title: {
+                            display: true,
+                            text: `Streams por Continente en ${month}`,
+                            color: 'white',
+                            }
+                        },
+                    scales: {
+                        x: { ticks: { color: '#ccc' } },
+                        y: { ticks: { color: '#ccc' } }
+                        }
+                    }
+                });
+            }
+
+    </script>
+
+
+
+
+{% endblock %}
