@@ -1,0 +1,139 @@
+<!-- LLamada a baseK -->
+{% extends "baseK.html" %}
+{% block title %} Create Playlist {% endblock %}
+
+<!-- Contenido especifico Playlist -->
+{% block content %}
+{% load static %}
+
+    <div class="container mt-4">
+        <h2 class="display-2"><strong>Welcome, create your playlist</strong></h2>
+    </div>
+
+    <!-- info (seccionada en filas y columnas)-->
+    <div class="container mt-5">
+
+        <!-- fila 1-->
+        <div class="row">
+
+            <!-- colummna1 style="background-color: #6d9466;"-->
+            <div class="col-md-12">
+                <div class="card text-center mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Total songs in playlist</h5>
+                        <p class="card-text display-4">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="font-weight-bold p-4 text-center">your favorite artists</h2>
+            <div class="galeria-deslizable-wrapper my-4">
+                <div class="galeria-deslizable">
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2024/08/1.-The-Weeknd.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">The Weeknd</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2024/08/2.-Bruno-Mars.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Bruno Mars</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2025/02/3.-Ed-Sheeran.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Ed Sheeran</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2025/02/4.-Justin-Bieber.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Justin Bieber</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2025/01/3.-Lady-Gaga.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Lady Gaga</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2024/04/6.-Coldplay.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Coldplay</p>
+                    </div>
+                    
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2024/08/1.-The-Weeknd.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">The Weeknd</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2024/08/2.-Bruno-Mars.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Bruno Mars</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2025/02/3.-Ed-Sheeran.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Ed Sheeran</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2025/02/4.-Justin-Bieber.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Justin Bieber</p>
+                    </div>
+
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2025/01/3.-Lady-Gaga.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Lady Gaga</p>
+                    </div>
+                    
+                    <div class="foto-item text-center">
+                        <img src="https://routenote.com/blog/wp-content/uploads/2024/04/6.-Coldplay.jpeg" class="foto-circular mb-2">
+                        <p class="nombre-foto">Coldplay</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- fila 2-->
+        <div class="row">
+
+            <!-- columna 1-->
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title   "> Songs</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Song 1 - artist</li>
+                            <li class="list-group-item">Song 2 - artist</li>
+                            <li class="list-group-item">Song 3 - artist</li>
+                            <li class="list-group-item">Song 4 - artist</li>
+                            <li class="list-group-item">Song 5 - artist</li>
+                            <li class="list-group-item">Song 6 - artist</li>
+                            <li class="list-group-item">Song 7 - artist</li>
+                            <li class="list-group-item">Song 8 - artist</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- columna 2-->
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title"> recomendations</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">song 1</li>
+                            <li class="list-group-item">song 2</li>
+                            <li class="list-group-item">song 3</li>
+                            <li class="list-group-item">song 4</li>
+                            <li class="list-group-item">song 5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
+<!-- FIN Contenido-->

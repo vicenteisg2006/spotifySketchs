@@ -11,6 +11,11 @@ urlpatterns = [
     path('user/', views.userPage, name='user'),
     path('dashboard/', views.admin, name='dashboard'),
 
+    #Variantes (Usan alguna base)
+    path('userV/', views.userV, name='userV'),
+    path('playlistV/', views.playlistV, name='playlistV'),
+    path('artistV/', views.artistV, name='artistV'),
+
     #jose tomas henriquez
     path('playlist/', views.playlist, name='playlist'),
 
