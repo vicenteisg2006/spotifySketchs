@@ -111,19 +111,47 @@ input.form-control {
 .foto-item {
     display: inline-block;
     text-align: center;
+    flex-shrink: 0;
 }
 
-.foto-circular {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+img.foto-circular {
+    width: 120px !important;
+    height: 120px !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
+    max-width: 120px !important;
+    max-height: 120px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+    margin-bottom: 0.5rem !important;
+    transition: transform 0.3s ease !important;
     pointer-events: none;
 }
 
-.foto-circular:hover {
-    transform: scale(1.12);
+img.foto-circular:hover {
+    transform: scale(1.12) !important;
+}
+
+img.foto-cuadrada {
+    width: 120px !important;
+    height: 120px !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
+    max-width: 120px !important;
+    max-height: 120px !important;
+    border-radius: 10px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+    margin-bottom: 0.5rem !important;
+    transition: transform 0.3s ease !important;
+    pointer-events: none;
+}
+
+img.foto-cuadrada:hover {
+    transform: scale(1.12) !important;
 }
 
 .nombre-foto {
@@ -139,13 +167,92 @@ input.form-control {
 
 
 /* =========================
+   GALERIA DESLIZABLE DE CARDS
+   ========================= */
+
+.galeria-deslizable-wrapper-inner-cards {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding: 20px 0;
+    cursor: grab;
+    user-select: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.galeria-deslizable-wrapper-inner-cards:active {
+    cursor: grabbing;
+}
+
+.galeria-deslizable-wrapper-inner-cards::-webkit-scrollbar {
+    display: none;
+}
+
+.galeria-deslizable-cards {
+    display: flex;
+    gap: 25px;
+    padding: 0 20px;
+}
+
+.card-item {
+    flex: 0 0 auto;
+    width: 280px;
+}
+
+.card-item .card {
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.card-item .card:hover {
+    transform: translateY(-5px);
+}
+
+.card-item .card-img-top {
+    height: 280px;
+    object-fit: cover;
+}
+
+
+/* =========================
    MEDIA QUERIES
    ========================= */
 
 @media (min-width: 1200px) {
-    .foto-circular {
-        width: 220px;
-        height: 220px;
+    img.foto-circular {
+        width: 220px !important;
+        height: 220px !important;
+        min-width: 220px !important;
+        min-height: 220px !important;
+        max-width: 220px !important;
+        max-height: 220px !important;
+    }
+    
+    img.foto-cuadrada {
+        width: 220px !important;
+        height: 220px !important;
+        min-width: 220px !important;
+        min-height: 220px !important;
+        max-width: 220px !important;
+        max-height: 220px !important;
+    }
+    
+    .card-item {
+        width: 320px;
+    }
+    
+    .card-item .card-img-top {
+        height: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-item {
+        width: 250px;
+    }
+    
+    .card-item .card-img-top {
+        height: 250px;
     }
 }
 
