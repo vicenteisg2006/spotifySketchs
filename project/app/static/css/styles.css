@@ -115,43 +115,41 @@ input.form-control {
 }
 
 img.foto-circular {
-    width: 120px !important;
-    height: 120px !important;
-    min-width: 120px !important;
-    min-height: 120px !important;
-    max-width: 120px !important;
-    max-height: 120px !important;
+    width: 180px !important;
+    height: 180px !important;
+    min-width: 180px !important;
+    min-height: 180px !important;
+    max-width: 180px !important;
+    max-height: 180px !important;
     border-radius: 50% !important;
     object-fit: cover !important;
     object-position: center !important;
     display: block !important;
-    margin-bottom: 0.5rem !important;
-    transition: transform 0.3s ease !important;
+    transition: transform 0.3s ease;
     pointer-events: none;
 }
 
 img.foto-circular:hover {
-    transform: scale(1.12) !important;
+    transform: scale(1.12);
 }
 
 img.foto-cuadrada {
-    width: 120px !important;
-    height: 120px !important;
-    min-width: 120px !important;
-    min-height: 120px !important;
-    max-width: 120px !important;
-    max-height: 120px !important;
+    width: 180px !important;
+    height: 180px !important;
+    min-width: 180px !important;
+    min-height: 180px !important;
+    max-width: 180px !important;
+    max-height: 180px !important;
     border-radius: 10px !important;
     object-fit: cover !important;
     object-position: center !important;
     display: block !important;
-    margin-bottom: 0.5rem !important;
-    transition: transform 0.3s ease !important;
+    transition: transform 0.3s ease;
     pointer-events: none;
 }
 
 img.foto-cuadrada:hover {
-    transform: scale(1.12) !important;
+    transform: scale(1.12);
 }
 
 .nombre-foto {
@@ -220,21 +218,21 @@ img.foto-cuadrada:hover {
 
 @media (min-width: 1200px) {
     img.foto-circular {
-        width: 220px !important;
-        height: 220px !important;
-        min-width: 220px !important;
-        min-height: 220px !important;
-        max-width: 220px !important;
-        max-height: 220px !important;
+        width: 250px !important;
+        height: 250px !important;
+        min-width: 250px !important;
+        min-height: 250px !important;
+        max-width: 250px !important;
+        max-height: 250px !important;
     }
     
     img.foto-cuadrada {
-        width: 220px !important;
-        height: 220px !important;
-        min-width: 220px !important;
-        min-height: 220px !important;
-        max-width: 220px !important;
-        max-height: 220px !important;
+        width: 250px !important;
+        height: 250px !important;
+        min-width: 250px !important;
+        min-height: 250px !important;
+        max-width: 250px !important;
+        max-height: 250px !important;
     }
     
     .card-item {
