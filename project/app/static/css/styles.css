@@ -1,66 +1,151 @@
-.galeria-deslizable-wrapper {
-  overflow-x: auto;
-  cursor: grab;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 1rem;
+/* =========================
+   ESTILOS GENERALES
+   ========================= */
+
+.card {
+    background-color: #0d0d0d;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.06);
 }
 
-.galeria-deslizable {
-  display: flex;
-  gap: 2rem;
-  user-select: none; /* evita selección accidental */
+.card-title,
+.card-text,
+.navbar-brand {
+    color: #ffffff;
 }
 
-.foto-item {
-  flex: 0 0 auto; /* evita que se reduzcan las fotos */
-  scroll-snap-align: start;
-  text-align: center;
+input.form-control {
+    color: #ffffff;
 }
 
-.foto-circular {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
 
-.foto-circular:hover {
-  transform: scale(1.05);
-}
-
-.nombre-foto {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #333;
-}
+/* =========================
+   CARRUSEL PRINCIPAL
+   ========================= */
 
 #carouselExampleAutoplaying {
-  max-width: 100%;
-  overflow: hidden;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 #carouselExampleAutoplaying .carousel-inner {
-  height: 800px; /* altura fija del carrusel */
+    height: 800px;
 }
 
 #carouselExampleAutoplaying .carousel-item {
-  height: 100%;
+    height: 100%;
 }
 
 #carouselExampleAutoplaying .carousel-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
 }
 
 
+/* =========================
+   CARRUSEL SECUNDARIO (AAA)
+   ========================= */
+
+#carouselAAA {
+    height: 60vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#carouselAAA .carousel-item {
+    height: 100%;
+}
+
+#carouselAAA img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.carousel-caption h5 {
+    color: #ffffff;
+}
+
+
+/* =========================
+   GALERIA DESLIZABLE
+   ========================= */
+
+.galeria-deslizable-wrapper {
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+    padding-bottom: 10px;
+}
+
+.galeria-deslizable-wrapper-inner {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding-bottom: 20px;
+    margin-bottom: -20px;
+    cursor: grab;
+    user-select: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.galeria-deslizable-wrapper-inner:active {
+    cursor: grabbing;
+}
+
+.galeria-deslizable-wrapper-inner::-webkit-scrollbar {
+    display: none;
+}
+
+.galeria-deslizable {
+    display: flex;
+    gap: 25px;
+}
+
+
+/* =========================
+   ELEMENTOS DE FOTO
+   ========================= */
+
+.foto-item {
+    display: inline-block;
+    text-align: center;
+}
+
+.foto-circular {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+}
+
+.foto-circular:hover {
+    transform: scale(1.12);
+}
+
+.nombre-foto {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #e9e9e9;
+}
+
+.foto-item .nombre-foto {
+    color: #e9e9e9;
+}
+
+
+/* =========================
+   MEDIA QUERIES
+   ========================= */
 
 @media (min-width: 1200px) {
-  .foto-circular {
-    width: 220px;
-    height: 220px;
-  }
+    .foto-circular {
+        width: 220px;
+        height: 220px;
+    }
 }
 
