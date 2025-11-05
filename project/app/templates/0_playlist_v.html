@@ -1,199 +1,165 @@
-<!-- LLamada a baseK -->
 {% extends "baseK.html" %}
 {% block title %} Create Playlist {% endblock %}
 {% block extra_head %}
-{% endblock %}
-<!-- Contenido especifico Playlist -->
-{% block content %}
 {% load static %}
+{% endblock %}
 
-    <div class="container mt-4">
-        <h2 class="display-2"><strong>Welcome, create your playlist</strong></h2>
-    </div>
+{% block content %}
 
-    <!-- info (seccionada en filas y columnas)-->
-    <div class="container mt-5">
+<div class="container mt-4">
+    <h2 class="display-2 text-center fw-bold">Crea tu playlist</h2>
+</div>
 
-        <!-- fila 1-->
-        <div class="row">
-
-            <!-- colummna1 style="background-color: #6d9466;"-->
-            <div class="col-md-12">
-                <div class="card text-center mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Total songs in playlist</h5>
-                        <p class="card-text display-4">0</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
-    <!-- Contenedor de canciones y recomendaciones -->
-    <div class="container mt-5">
-        <div class="row">
-            <!-- columna 1 -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Songs</h5>
-
-                        <ul class="list-group list-group-flush">
-
-                            <!-- SONG ITEM -->
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center gap-3">
-                                    <img src="https://picsum.photos/seed/song1/80" class="rounded" width="48" height="48">
-                                    <span>Blinding Lights - The Weeknd</span>
-                                </div>
-                                <button class="btn btn-success btn-sm rounded-pill px-3">
-                                    <i class="bi bi-plus-lg"></i>
-                                </button>
-                            </li>
-
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center gap-3">
-                                    <img src="https://picsum.photos/seed/song2/80" class="rounded" width="48" height="48">
-                                    <span>Talking to the Moon - Bruno Mars</span>
-                                </div>
-                                <button class="btn btn-success btn-sm rounded-pill px-3">
-                                    <i class="bi bi-plus-lg"></i>
-                                </button>
-                            </li>
-
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center gap-3">
-                                    <img src="https://picsum.photos/seed/song3/80" class="rounded" width="48" height="48">
-                                    <span>Perfect - Ed Sheeran</span>
-                                </div>
-                                <button class="btn btn-success btn-sm rounded-pill px-3">
-                                    <i class="bi bi-plus-lg"></i>
-                                </button>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- columna 2 -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Recommendations</h5>
-                        <ul class="list-group list-group-flush">
-
-                            <!-- RECO ITEM -->
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center gap-3">
-                                    <img src="https://picsum.photos/seed/song4/80" class="rounded" width="48" height="48">
-                                    <span>Hold On - Justin Bieber</span>
-                                </div>
-                                <button class="btn btn-success btn-sm rounded-pill px-3">
-                                    <i class="bi bi-plus-lg"></i>
-                                </button>
-                            </li>
-
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center gap-3">
-                                    <img src="https://picsum.photos/seed/song5/80" class="rounded" width="48" height="48">
-                                    <span>Rain On Me - Lady Gaga</span>
-                                </div>
-                                <button class="btn btn-success btn-sm rounded-pill px-3">
-                                    <i class="bi bi-plus-lg"></i>
-                                </button>
-                            </li>
-
-                        </ul>
-                    </div>
+<!-- CONTADOR -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card text-center bg-dark text-white border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total de canciones en la playlist</h5>
+                    <p id="songCount" class="card-text display-4 mb-0">0</p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-        <!-- Playlists Favoritas -->
-        <h2 class="font-weight-bold p-4 text-center">Tus Playlists Favoritas</h2>
-        <div class="galeria-deslizable-wrapper my-4">
-            <div class="galeria-deslizable-wrapper-inner-cards">
-                <div class="galeria-deslizable">
-                    <div class="foto-item text-center">
-                        <img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2">
-                    </div>
-    
-                    <div class="foto-item text-center">
-                        <img src="{% static 'images/playlist3.jpg' %}" class="foto-cuadrada mb-2">
-                    </div>
-    
-                    <div class="foto-item text-center">
-                        <img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2">
-                    </div>
-    
-                    <div class="foto-item text-center">
-                        <img src="{% static 'images/playlist7.jpg' %}" class="foto-cuadrada mb-2">
-                    </div>
-    
-                    <div class="foto-item text-center">
-                        <img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2">
-                    </div>
-    
-                    <div class="foto-item text-center">
-                        <img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2">
-                    </div>
-    
-                    <div class="foto-item text-center">
-                        <img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2">
-                    </div>
-    
-                    <div class="foto-item text-center">
-                        <img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2">
-                    </div>
+<!-- CREAR PLAYLIST -->
+<div class="container mt-5 text-center">
+    <h2 class="display-5 mb-3 fw-bold">Crea tu Playlist</h2>
+
+    <form method="POST" action="{% url 'create_playlist' %}" class="mt-3">
+        {% csrf_token %}
+        <div class="input-group mb-3 w-50 mx-auto">
+            <input type="text" class="form-control" name="playlist_name" placeholder="Enter playlist name" required>
+            <button class="btn btn-success" type="submit">Crear</button>
+        </div>
+    </form>
+
+    {% if playlist_name %}
+        <h4 class="mt-4 text-success">Playlist creada: <strong>{{ playlist_name }}</strong></h4>
+    {% endif %}
+</div>
+
+<!-- LISTAS DE CANCIONES -->
+<div class="container mt-5">
+    <div class="row">
+        <!-- PLAYLIST ACTUAL -->
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark text-white border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Tu Playlist</h5>
+                    <ul id="playlist" class="list-group list-group-flush"></ul>
                 </div>
             </div>
         </div>
-    
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    
-    <script>
-        // Funcionalidad de arrastre para las galerías
-        function addDragFunctionality(selector) {
-            const sliders = document.querySelectorAll(selector);
-            
-            sliders.forEach(slider => {
-                let isDown = false;
-                let startX;
-                let scrollLeft;
+        <!-- RECOMENDACIONES -->
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark text-white border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Recomendaciones</h5>
+                    <ul id="recomendaciones" class="list-group list-group-flush">
+                        <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://picsum.photos/seed/song1/80" class="rounded" width="48" height="48">
+                                <span>Blinding Lights - The Weeknd</span>
+                            </div>
+                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                        </li>
+                        <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://picsum.photos/seed/song2/80" class="rounded" width="48" height="48">
+                                <span>Talking to the Moon - Bruno Mars</span>
+                            </div>
+                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                        </li>
+                        <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://picsum.photos/seed/song3/80" class="rounded" width="48" height="48">
+                                <span>Perfect - Ed Sheeran</span>
+                            </div>
+                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                        </li>
+                        <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://picsum.photos/seed/song4/80" class="rounded" width="48" height="48">
+                                <span>Hold On - Justin Bieber</span>
+                            </div>
+                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                        </li>
+                        <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://picsum.photos/seed/song5/80" class="rounded" width="48" height="48">
+                                <span>Rain On Me - Lady Gaga</span>
+                            </div>
+                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                slider.addEventListener('mousedown', (e) => {
-                    isDown = true;
-                    startX = e.pageX - slider.offsetLeft;
-                    scrollLeft = slider.scrollLeft;
-                });
+<!-- GALERÍA DE PLAYLISTS -->
+<h2 class="fw-bold p-4 text-center">Tus Playlists Favoritas</h2>
+<div class="galeria-deslizable-wrapper my-4">
+    <div class="galeria-deslizable-wrapper-inner-cards">
+        <div class="galeria-deslizable">
+            <div class="foto-item text-center"><img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2"></div>
+            <div class="foto-item text-center"><img src="{% static 'images/playlist3.jpg' %}" class="foto-cuadrada mb-2"></div>
+            <div class="foto-item text-center"><img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2"></div>
+            <div class="foto-item text-center"><img src="{% static 'images/playlist7.jpg' %}" class="foto-cuadrada mb-2"></div>
+            <div class="foto-item text-center"><img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2"></div>
+            <div class="foto-item text-center"><img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2"></div>
+        </div>
+    </div>
+</div>
 
-                slider.addEventListener('mouseleave', () => {
-                    isDown = false;
-                });
+<!-- Bootstrap -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
-                slider.addEventListener('mouseup', () => {
-                    isDown = false;
-                });
+<!-- Script funcionalidad -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const addButtons = document.querySelectorAll(".add-btn");
+    const playlist = document.getElementById("playlist");
+    const countEl = document.getElementById("songCount");
+    let total = 0;
 
-                slider.addEventListener('mousemove', (e) => {
-                    if (!isDown) return;
-                    e.preventDefault();
-                    const x = e.pageX - slider.offsetLeft;
-                    const walk = (x - startX) * 2; // Multiplicador para velocidad de scroll
-                    slider.scrollLeft = scrollLeft - walk;
-                });
+    addButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const item = btn.closest("li");
+            const songText = item.querySelector("span").textContent;
+            const imgSrc = item.querySelector("img").src;
+
+            // Evitar duplicados
+            if ([...playlist.children].some(li => li.textContent.includes(songText))) return;
+
+            // Crear item nuevo
+            const newItem = document.createElement("li");
+            newItem.className = "list-group-item bg-dark text-white d-flex justify-content-between align-items-center";
+            newItem.innerHTML = `
+                <div class="d-flex align-items-center gap-3">
+                    <img src="${imgSrc}" class="rounded" width="48" height="48">
+                    <span>${songText}</span>
+                </div>
+                <button class="btn btn-danger btn-sm rounded-pill px-3 remove-btn"><i class="bi bi-dash-lg"></i></button>
+            `;
+            playlist.appendChild(newItem);
+
+            total++;
+            countEl.textContent = total;
+
+            newItem.querySelector(".remove-btn").addEventListener("click", () => {
+                newItem.remove();
+                total--;
+                countEl.textContent = total;
             });
-        }
-
-        // Aplicar funcionalidad a todas las galerías
-        addDragFunctionality('.galeria-deslizable-wrapper-inner');
-        addDragFunctionality('.galeria-deslizable-wrapper-inner-cards');
-    </script>
+        });
+    });
+});
+</script>
 
 {% endblock %}
-<!-- FIN Contenido-->

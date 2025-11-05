@@ -16,10 +16,12 @@ urlpatterns = [
     path('playlistV/', views.playlistV, name='playlistV'),
     path('artistV/', views.artistV, name='artistV'),
 
-    #jose tomas henriquez
+    #playlist
     path('playlist/', views.playlist, name='playlist'),
 
     #prototipos
     path('Anne-Marie/', views.annemarie, name='AnneMarie'),
 
+    # crear playlist
+    path('create-playlist/', views.create_playlist, name='create_playlist'),
 ]

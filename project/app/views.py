@@ -137,3 +137,22 @@ def admin(request): #Administrador
 
 
 # ========== COMPLEMENTOS ADMINISTRADOR ==========
+
+
+# ========== PLAYLIST ==========
+def create_playlist(request):
+    if request.method == "POST":
+        playlist_name = request.POST.get("playlist_name")
+        
+        context = {
+            "playlist_name": playlist_name,
+            "songs": [
+                {"name": "Blinding Lights", "artist": "The Weeknd"},
+                {"name": "Talking to the Moon", "artist": "Bruno Mars"},
+                {"name": "Perfect", "artist": "Ed Sheeran"},
+            ]
+        }
+        return render(request, "0_playlist_v.html", context)
+    
+    # Si no se envió el formulario todavía
+    return render(request, "0_playlist_v.html", {"playlist_name": None})
