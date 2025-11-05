@@ -158,7 +158,11 @@ def playlist(request): #Playlist
     return render(request, 'playlist.html')
 
 def playlistV(request): #Variante playlist -> usando BaseK
-    return render(request, '0_playlist_v.html')
+    context = {
+        'placeholder_text': 'Ingresa el nombre de tu playlist',
+        'playlist_name': None
+    }
+    return render(request, '0_playlist_v.html', context)
 
 
 
@@ -183,6 +187,7 @@ def create_playlist(request):
         
         context = {
             "playlist_name": playlist_name,
+            "placeholder_text": "Ingresa el nombre de tu playlist",
             "songs": [
                 {"name": "Blinding Lights", "artist": "The Weeknd"},
                 {"name": "Talking to the Moon", "artist": "Bruno Mars"},
@@ -192,4 +197,8 @@ def create_playlist(request):
         return render(request, "0_playlist_v.html", context)
     
     # Si no se envió el formulario todavía
-    return render(request, "0_playlist_v.html", {"playlist_name": None})
+    context = {
+        "playlist_name": None,
+        "placeholder_text": "Ingresa el nombre de tu playlist"
+    }
+    return render(request, "0_playlist_v.html", context)
