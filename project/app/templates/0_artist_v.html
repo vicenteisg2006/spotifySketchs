@@ -9,7 +9,7 @@
 
     <!-- Header -->
     <div class="container mt-5">
-        <h2 class="display-2 mb-3">Bienvenido, <span style="color:#1db954;">{{artist_name}}</span></h2>
+        <h2 class="display-2 mb-3">Bienvenido, <span style="color:#8efab4;">{{artist_name}}</span></h2>
         <p class="lead text-secondary">Rastrea tu desempeño, conoce a tu público y conecta.</p>
     </div>
 
@@ -107,6 +107,15 @@
             </div>
 
         </div>
+
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card p-3 mb-4">
+                    <h5 class="card-title text-center">Streams por Album</h5>
+                    <canvas id="albumsChart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -114,9 +123,11 @@
         const listeners_chart = JSON.parse('{{ listeners_chart|escapejs }}');
         const continental_data = JSON.parse('{{ continental_data|escapejs }}');
         const continental_listeners_data = JSON.parse('{{ continental_listeners_data|escapejs }}');
+        const albums_chart = JSON.parse('{{ albums_chart|escapejs }}');
 
         const ctx1 = document.getElementById('streamsChart');
         const ctx2 = document.getElementById('continentalChart');
+        const ctx3 = document.getElementById('albumsChart');
 
         let mainChart = null;
         let continentalChart = null;
@@ -139,10 +150,18 @@
                     datasets: [{
                         label: label,
                         data: data.values,
-                        borderColor: '#1db954',
+                        borderColor: 'rgb(30, 215, 96)',
                         tension: 0.3,
                         fill: true,
-                        backgroundColor: 'rgba(29,185,84,0.1)'
+                        backgroundColor: 'rgba(30, 215, 96, 0.1)',
+                        pointRadius: 5,
+                        pointHoverRadius: 12,
+                        pointBackgroundColor: 'rgb(30, 215, 96)',
+                        pointBorderColor: 'rgb(30, 215, 96)',
+                        pointHoverBackgroundColor: 'rgb(30, 215, 96)',
+                        pointHoverBorderColor: 'white',
+                        pointBorderWidth: 1.2,
+                        pointHoverBorderWidth: 3
                     }]
                 },
                 options: {
@@ -158,7 +177,7 @@
                         x: { ticks: { color: '#ccc' } },
                         y: { ticks: { color: '#ccc' } }
                     },
-                    onHover: (event, chartElement) => {
+                    onClick: (event, chartElement) => {
                         if (chartElement.length > 0) {
                             const index = chartElement[0].index;
                             const month = data.labels[index];
@@ -176,6 +195,17 @@
             const values = Object.values(data);
             const label = mode === 'streams' ? 'Streams' : 'Oyentes';
 
+            // Colores por continente
+            const continentColors = {
+                'Asia': '#FF6B9D',
+                'Africa': '#FFD93D',
+                'America': '#4ECDC4',
+                'Europa': '#95E1D3',
+                'Oceania': '#C77DFF'
+            };
+
+            const backgroundColor = labels.map(continent => continentColors[continent] || '#1db954');
+
             if (continentalChart) {
                 continentalChart.destroy();
             } 
@@ -187,7 +217,9 @@
                     datasets: [{
                         label: `${month} - ${label}`,
                         data: values,
-                        backgroundColor: '#1db954'
+                        backgroundColor: backgroundColor,
+                        borderColor: '#191414',
+                        borderWidth: 1
                     }]
                 },
                 options: {
@@ -196,6 +228,15 @@
                         title: {
                             display: true,
                             color: 'white',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const value = ctx.parsed.y.toLocaleString();
+                                    const tooltipLabel = mode === 'streams' ? ' streams' : ' oyentes';
+                                    return `${value}${tooltipLabel}`;
+                                }
+                            }
                         }
                     },
                     scales: {
@@ -223,6 +264,45 @@
 
         // Inicializar el gráfico principal
         createMainChart('streams');
+
+        // Crear gráfico de álbumes tipo Doughnut
+        new Chart(ctx3, {
+            type: 'doughnut',
+            data: {
+                labels: albums_chart.labels,
+                datasets: [{
+                    data: albums_chart.data,
+                    backgroundColor: albums_chart.backgroundColor,
+                    borderColor: '#191414',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { 
+                        labels: { 
+                            color: 'white',
+                            font: { size: 14 },
+                            padding: 15
+                        },
+                        position: 'right'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                const label = ctx.label || '';
+                                const value = ctx.parsed.toLocaleString();
+                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((ctx.parsed / total) * 100).toFixed(1);
+                                return `${label}: ${value} streams (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
 
     </script>
 

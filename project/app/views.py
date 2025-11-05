@@ -92,6 +92,42 @@ def artistV(request): #Variante artista -> usando BaseKA
         'Jul': {'Asia': 6750, 'Africa': 4500, 'America': 12000, 'Europa': 12000, 'Oceania': 9750},
     }
 
+    # Datos de canciones para calcular álbumes más escuchados
+    songs = [
+        {'name': 'Levitating', 'album': 'Future Nostalgia', 'duration': '3:23', 'streams': 500000, 'release_date': '2020-03-27'},
+        {'name': 'Don\'t Start Now', 'album': 'Future Nostalgia', 'duration': '3:03', 'streams': 400000, 'release_date': '2019-11-01'},
+        {'name': 'Dance the Night', 'album': 'Barbie The Album', 'duration': '2:57', 'streams': 300000, 'release_date': '2023-05-25'},
+        {'name': 'New Rules', 'album': 'Dua Lipa', 'duration': '3:29', 'streams': 200000, 'release_date': '2017-07-07'},
+        {'name': 'Hallucinate', 'album': 'Future Nostalgia', 'duration': '3:27', 'streams': 100000, 'release_date': '2020-03-27'},
+        {'name': 'Physical', 'album': 'Future Nostalgia', 'duration': '3:13', 'streams': 250000, 'release_date': '2020-01-31'},
+        {'name': 'Break My Heart', 'album': 'Future Nostalgia', 'duration': '3:41', 'streams': 180000, 'release_date': '2020-03-25'},
+        {'name': 'One Kiss', 'album': 'One Kiss', 'duration': '3:34', 'streams': 350000, 'release_date': '2018-04-06'},
+        {'name': 'IDGAF', 'album': 'Dua Lipa', 'duration': '3:38', 'streams': 220000, 'release_date': '2018-01-12'},
+        {'name': 'Cold Heart', 'album': 'Cold Heart', 'duration': '3:22', 'streams': 280000, 'release_date': '2021-08-13'},
+        {'name': 'Love Again', 'album': 'Future Nostalgia', 'duration': '4:18', 'streams': 150000, 'release_date': '2020-03-27'},
+        {'name': 'Pretty Please', 'album': 'Future Nostalgia', 'duration': '3:15', 'streams': 90000, 'release_date': '2020-03-27'},
+        {'name': 'Be the One', 'album': 'Dua Lipa', 'duration': '3:23', 'streams': 170000, 'release_date': '2015-10-30'},
+        {'name': 'Blow Your Mind', 'album': 'Dua Lipa', 'duration': '3:32', 'streams': 140000, 'release_date': '2016-08-26'},
+        {'name': 'Hotter Than Hell', 'album': 'Dua Lipa', 'duration': '3:08', 'streams': 130000, 'release_date': '2016-06-10'},
+    ]
+    
+    # Calcular streams por álbum
+    album_streams = {}
+    for song in songs:
+        album = song['album']
+        if album not in album_streams:
+            album_streams[album] = 0
+        album_streams[album] += song['streams']
+    
+    # Ordenar álbumes por streams (descendente)
+    sorted_albums = sorted(album_streams.items(), key=lambda x: x[1], reverse=True)
+    
+    albums_chart = {
+        'labels': [album[0] for album in sorted_albums],
+        'data': [album[1] for album in sorted_albums],
+        'backgroundColor': ['#FF6B9D', '#4ECDC4', '#FFD93D', '#95E1D3', '#C77DFF', '#00F5FF'],
+    }
+
     #context
     context = {
         'artist_name': 'Dua Lipa',
@@ -116,6 +152,7 @@ def artistV(request): #Variante artista -> usando BaseKA
         'listeners_chart': json.dumps(listeners_chart), #jsoneado
         'continental_data': json.dumps(continental_data), #jsoneado
         'continental_listeners_data': json.dumps(continental_listeners_data), #jsoneado
+        'albums_chart': json.dumps(albums_chart), #jsoneado
     }
     return render(request, '0_artist_v.html', context)
 
