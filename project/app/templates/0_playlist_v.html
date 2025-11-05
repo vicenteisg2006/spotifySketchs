@@ -12,14 +12,110 @@
         background-color: #fff !important;
         color: #000 !important;
     }
+
+    .foto-item {
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .foto-item:hover {
+        transform: scale(1.05);
+    }
+
+    .foto-item:active {
+        transform: scale(0.98);
+    }
+
+    .playlist-link {
+        text-decoration: none;
+    }
+
+    .carousel-wrapper {
+        position: relative;
+        overflow: hidden;
+        padding: 0 50px;
+    }
+
+    /* Sobrescribir estilos del CSS global para el carrusel de playlists */
+    .carousel-wrapper .galeria-deslizable-wrapper-inner-cards {
+        cursor: default !important;
+        overflow: hidden !important;
+        padding: 20px 0 !important;
+    }
+
+    .carousel-wrapper .galeria-deslizable-wrapper-inner-cards:active {
+        cursor: default !important;
+    }
+
+    /* Permitir interacción con los enlaces de playlist */
+    .carousel-wrapper .playlist-link,
+    .carousel-wrapper .foto-item {
+        pointer-events: auto;
+    }
+
+    .carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(30, 215, 96, 0.9);
+        color: white;
+        border: 2px solid white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        transition: all 0.3s;
+        outline: none;
+    }
+
+    .carousel-arrow:hover {
+        background-color: rgba(30, 215, 96, 1);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-arrow:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+
+    .carousel-arrow:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        background-color: rgba(100, 100, 100, 0.5);
+    }
+
+    .carousel-arrow.left {
+        left: 5px;
+    }
+
+    .carousel-arrow.right {
+        right: 5px;
+    }
+
+    .galeria-deslizable {
+        scroll-behavior: smooth;
+    }
+
+    /* Estilos específicos para el carrusel de playlists */
+    #playlistCarousel {
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    #playlistCarousel::-webkit-scrollbar {
+        display: none;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-
-<div class="container mt-4">
-    <h2 class="display-2 text-center fw-bold">Crea tu playlist</h2>
-</div>
 
 <!-- CONTADOR -->
 <div class="container mt-5">
@@ -41,14 +137,19 @@
 
     <form method="POST" action="{% url 'create_playlist' %}" class="mt-3">
         {% csrf_token %}
-        <div class="input-group mb-3 w-50 mx-auto">
-            <input type="text" class="form-control" name="playlist_name" placeholder="{{ placeholder_text }}" value="{{ playlist_name|default:'' }}" required>
-            <button class="btn btn-success" type="submit">Crear</button>
+        <div class="w-50 mx-auto">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="playlist_name" placeholder="{{ placeholder_text }}" value="{{ playlist_name|default:'' }}" required style="background-color: #2a2a2a !important; color: #fff !important; border-color: #444 !important;">
+            </div>
+            <div class="input-group mb-3">
+                <input type="url" class="form-control" name="img_src" placeholder="URL de la imagen (opcional)" style="background-color: #2a2a2a !important; color: #fff !important; border-color: #444 !important;">
+            </div>
+            <button class="btn btn-success w-100" type="submit">Crear</button>
         </div>
     </form>
 
     {% if playlist_name %}
-        <h4 class="mt-4 text-success">Playlist creada: <strong>{{ playlist_name }}</strong></h4>
+        <h4 class="mt-4 text-success">Playlist: <strong>{{ playlist_name }}</strong></h4>
     {% endif %}
 </div>
 
@@ -76,35 +177,35 @@
                                 <img src="https://picsum.photos/seed/song1/80" class="rounded" width="48" height="48">
                                 <span>Blinding Lights - The Weeknd</span>
                             </div>
-                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                            <button class="btn btn-link text-white p-0 add-btn" style="font-size: 24px; border: none; background: none;"><i class="bi bi-plus-circle"></i></button>
                         </li>
                         <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center gap-3">
                                 <img src="https://picsum.photos/seed/song2/80" class="rounded" width="48" height="48">
                                 <span>Talking to the Moon - Bruno Mars</span>
                             </div>
-                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                            <button class="btn btn-link text-white p-0 add-btn" style="font-size: 24px; border: none; background: none;"><i class="bi bi-plus-circle"></i></button>
                         </li>
                         <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center gap-3">
                                 <img src="https://picsum.photos/seed/song3/80" class="rounded" width="48" height="48">
                                 <span>Perfect - Ed Sheeran</span>
                             </div>
-                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                            <button class="btn btn-link text-white p-0 add-btn" style="font-size: 24px; border: none; background: none;"><i class="bi bi-plus-circle"></i></button>
                         </li>
                         <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center gap-3">
                                 <img src="https://picsum.photos/seed/song4/80" class="rounded" width="48" height="48">
                                 <span>Hold On - Justin Bieber</span>
                             </div>
-                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                            <button class="btn btn-link text-white p-0 add-btn" style="font-size: 24px; border: none; background: none;"><i class="bi bi-plus-circle"></i></button>
                         </li>
                         <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center gap-3">
                                 <img src="https://picsum.photos/seed/song5/80" class="rounded" width="48" height="48">
                                 <span>Rain On Me - Lady Gaga</span>
                             </div>
-                            <button class="btn btn-success btn-sm rounded-pill px-3 add-btn"><i class="bi bi-plus-lg"></i></button>
+                            <button class="btn btn-link text-white p-0 add-btn" style="font-size: 24px; border: none; background: none;"><i class="bi bi-plus-circle"></i></button>
                         </li>
                     </ul>
                 </div>
@@ -114,16 +215,32 @@
 </div>
 
 <!-- GALERÍA DE PLAYLISTS -->
-<h2 class="fw-bold p-4 text-center">Tus Playlists Favoritas</h2>
+<h2 class="fw-bold p-4 text-center">Tus Playlists Creadas</h2>
 <div class="galeria-deslizable-wrapper my-4">
-    <div class="galeria-deslizable-wrapper-inner-cards">
-        <div class="galeria-deslizable">
-            <div class="foto-item text-center"><img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2"></div>
-            <div class="foto-item text-center"><img src="{% static 'images/playlist3.jpg' %}" class="foto-cuadrada mb-2"></div>
-            <div class="foto-item text-center"><img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2"></div>
-            <div class="foto-item text-center"><img src="{% static 'images/playlist7.jpg' %}" class="foto-cuadrada mb-2"></div>
-            <div class="foto-item text-center"><img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2"></div>
-            <div class="foto-item text-center"><img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2"></div>
+    <div class="carousel-wrapper">
+        <button type="button" class="carousel-arrow left" id="prevBtn">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button type="button" class="carousel-arrow right" id="nextBtn">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+        <div class="galeria-deslizable-wrapper-inner-cards">
+            <div class="galeria-deslizable" id="playlistCarousel">
+                {% if all_playlists %}
+                    {% for playlist in all_playlists %}
+                    <a href="?playlist_id={{ playlist.id }}" class="playlist-link">
+                        <div class="foto-item text-center p-3">
+                            <img src="{{ playlist.img_src }}" class="foto-cuadrada mb-2" alt="{{ playlist.name }}">
+                            <p class="text-white">{{ playlist.name }}</p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="foto-item text-center p-3">
+                        <p class="text-white">No hay playlists creadas aún</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
@@ -139,6 +256,80 @@ document.addEventListener("DOMContentLoaded", () => {
     const countEl = document.getElementById("songCount");
     let total = 0;
 
+    // Función para obtener el token CSRF
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // Función para crear el HTML de un item de canción
+    function createSongItem(songText, imgSrc, songId) {
+        const newItem = document.createElement("li");
+        newItem.className = "list-group-item bg-dark text-white d-flex justify-content-between align-items-center";
+        newItem.dataset.songId = songId;
+        newItem.innerHTML = `
+            <div class="d-flex align-items-center gap-3">
+                <img src="${imgSrc}" class="rounded" width="48" height="48">
+                <span>${songText}</span>
+            </div>
+            <button class="btn btn-link text-white p-0 remove-btn" style="font-size: 24px; border: none; background: none;"><i class="bi bi-dash-circle"></i></button>
+        `;
+        return newItem;
+    }
+
+    // Función para remover canción
+    function setupRemoveButton(item) {
+        const removeBtn = item.querySelector(".remove-btn");
+        removeBtn.addEventListener("click", () => {
+            const songId = item.dataset.songId;
+            
+            // Enviar solicitud al servidor para eliminar
+            fetch("{% url 'remove_song' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `song_id=${songId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    item.remove();
+                    total--;
+                    countEl.textContent = total;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+
+    // Cargar canciones existentes desde el servidor
+    const existingSongsJSON = '{{ songs|escapejs }}';
+    const existingSongs = existingSongsJSON ? JSON.parse(existingSongsJSON) : [];
+    console.log('Canciones cargadas:', existingSongs); // Debug
+    if (existingSongs && Array.isArray(existingSongs) && existingSongs.length > 0) {
+        existingSongs.forEach(song => {
+            const item = createSongItem(song.song_text, song.img_src, song.id);
+            playlist.appendChild(item);
+            setupRemoveButton(item);
+            total++;
+        });
+        countEl.textContent = total;
+    }
+
+    // Agregar nuevas canciones
     addButtons.forEach(btn => {
         btn.addEventListener("click", () => {
             const item = btn.closest("li");
@@ -146,31 +337,120 @@ document.addEventListener("DOMContentLoaded", () => {
             const imgSrc = item.querySelector("img").src;
 
             // Evitar duplicados
-            if ([...playlist.children].some(li => li.textContent.includes(songText))) return;
+            if ([...playlist.children].some(li => li.querySelector("span").textContent === songText)) return;
 
-            // Crear item nuevo
-            const newItem = document.createElement("li");
-            newItem.className = "list-group-item bg-dark text-white d-flex justify-content-between align-items-center";
-            newItem.innerHTML = `
-                <div class="d-flex align-items-center gap-3">
-                    <img src="${imgSrc}" class="rounded" width="48" height="48">
-                    <span>${songText}</span>
-                </div>
-                <button class="btn btn-danger btn-sm rounded-pill px-3 remove-btn"><i class="bi bi-dash-lg"></i></button>
-            `;
-            playlist.appendChild(newItem);
-
-            total++;
-            countEl.textContent = total;
-
-            newItem.querySelector(".remove-btn").addEventListener("click", () => {
-                newItem.remove();
-                total--;
-                countEl.textContent = total;
-            });
+            // Enviar solicitud al servidor para agregar
+            fetch("{% url 'add_song' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `song_text=${encodeURIComponent(songText)}&img_src=${encodeURIComponent(imgSrc)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const newItem = createSongItem(data.song_text, data.img_src, data.song_id);
+                    playlist.appendChild(newItem);
+                    setupRemoveButton(newItem);
+                    total++;
+                    countEl.textContent = total;
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
     });
 });
 </script>
+<script>
+    // Funcionalidad de carrusel con flechas para playlists
+    (function() {
+        const carousel = document.getElementById('playlistCarousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        if (carousel && prevBtn && nextBtn) {
+            const scrollAmount = 1200;
+
+            // Función para actualizar el estado de los botones
+            function updateButtons() {
+                const scrollLeft = carousel.scrollLeft;
+                const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+                
+                prevBtn.disabled = scrollLeft <= 1;
+                nextBtn.disabled = scrollLeft >= maxScroll - 1;
+            }
+
+            // Navegar hacia la izquierda
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                carousel.scrollBy({
+                    left: -scrollAmount,
+                    behavior: 'smooth'
+                });
+                setTimeout(updateButtons, 500);
+            });
+
+            // Navegar hacia la derecha
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                carousel.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+                setTimeout(updateButtons, 500);
+            });
+
+            // Actualizar botones al hacer scroll
+            carousel.addEventListener('scroll', updateButtons);
+
+            // Inicializar estado de los botones
+            setTimeout(updateButtons, 100);
+        }
+    })();
+
+    // Funcionalidad de arrastre para otras galerías (si las hay)
+    function addDragFunctionality(selector) {
+        const sliders = document.querySelectorAll(selector);
+        
+        sliders.forEach(slider => {
+            // Saltar el carrusel de playlists
+            if (slider.id === 'playlistCarousel') return;
+
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+            });
+
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+            });
+
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2;
+                slider.scrollLeft = scrollLeft - walk;
+            });
+        });
+    }
+
+    // Aplicar funcionalidad de arrastre a otras galerías
+    addDragFunctionality('.galeria-deslizable-wrapper-inner');
+</script>
+
 
 {% endblock %}

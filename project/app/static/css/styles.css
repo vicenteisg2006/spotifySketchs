@@ -161,6 +161,15 @@ img.foto-cuadrada:hover {
     color: #e9e9e9;
 }
 
+.foto-item p {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 180px;
+}
+
 
 /* =========================
    GALERIA DESLIZABLE DE CARDS
@@ -231,6 +240,10 @@ img.foto-cuadrada:hover {
         min-height: 250px !important;
         max-width: 250px !important;
         max-height: 250px !important;
+    }
+    
+    .foto-item p {
+        max-width: 250px;
     }
     
     .card-item {

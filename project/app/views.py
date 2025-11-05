@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from .models import Playlist, Song, PlaylistSong
 import json
 
 
@@ -63,7 +64,12 @@ def artistV(request): #Variante artista -> usando BaseKA
     #Datos para jsonear
     streams_chart = {
         'labels': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        'values': [120000, 150000, 170000, 190000, 210000, 260000, 300000],
+        'values': [130000, 150000, 100000, 190000, 210000, 260000, 150000],
+    }
+
+    listeners_chart = {
+        'labels': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        'values': [18000, 22500, 25500, 20000, 31500, 32000, 45000],
     }
 
     continental_data = {
@@ -76,6 +82,16 @@ def artistV(request): #Variante artista -> usando BaseKA
         'Jul': {'Asia': 45000, 'Africa': 30000, 'America': 80000, 'Europa': 80000, 'Oceania': 65000},
     }
 
+    continental_listeners_data = {
+        'Jan': {'Asia': 1500, 'Africa': 1500, 'America': 5250, 'Europa': 6000, 'Oceania': 3750},
+        'Feb': {'Asia': 2250, 'Africa': 2250, 'America': 6000, 'Europa': 6750, 'Oceania': 5250},
+        'Mar': {'Asia': 3000, 'Africa': 3000, 'America': 6750, 'Europa': 7500, 'Oceania': 5250},
+        'Apr': {'Asia': 3300, 'Africa': 3150, 'America': 7350, 'Europa': 9000, 'Oceania': 5700},
+        'May': {'Asia': 4050, 'Africa': 3150, 'America': 7950, 'Europa': 9600, 'Oceania': 6750},
+        'Jun': {'Asia': 6000, 'Africa': 3750, 'America': 9750, 'Europa': 11250, 'Oceania': 8250},
+        'Jul': {'Asia': 6750, 'Africa': 4500, 'America': 12000, 'Europa': 12000, 'Oceania': 9750},
+    }
+
     #context
     context = {
         'artist_name': 'Dua Lipa',
@@ -84,7 +100,7 @@ def artistV(request): #Variante artista -> usando BaseKA
         'followers': 123456,
         'top_songs': [
             {'name': 'Levitating', 'streams': 500000},
-            {'name': 'Don’t Start Now', 'streams': 400000},
+            {'name': 'Don\'t Start Now', 'streams': 400000},
             {'name': 'Dance the Night', 'streams': 300000},
             {'name': 'New Rules', 'streams': 200000},
             {'name': 'Hallucinate', 'streams': 100000},
@@ -97,7 +113,9 @@ def artistV(request): #Variante artista -> usando BaseKA
             {'name': 'User5', 'streams': 5000},
             ],
         'streams_chart': json.dumps(streams_chart), #jsoneado
+        'listeners_chart': json.dumps(listeners_chart), #jsoneado
         'continental_data': json.dumps(continental_data), #jsoneado
+        'continental_listeners_data': json.dumps(continental_listeners_data), #jsoneado
     }
     return render(request, '0_artist_v.html', context)
 
@@ -158,9 +176,34 @@ def playlist(request): #Playlist
     return render(request, 'playlist.html')
 
 def playlistV(request): #Variante playlist -> usando BaseK
+    # Verificar si se está cargando una playlist específica desde la galería
+    load_playlist_id = request.GET.get('playlist_id')
+    
+    if load_playlist_id:
+        # Si se pasa un ID por GET, cargar esa playlist
+        request.session['active_playlist_id'] = int(load_playlist_id)
+    
+    # Obtener la playlist activa de la sesión (si existe)
+    playlist_id = request.session.get('active_playlist_id')
+    playlist_obj = None
+    songs_list = []
+    
+    if playlist_id:
+        try:
+            playlist_obj = Playlist.objects.get(id=playlist_id)
+            # Obtener todas las canciones de la playlist con su información
+            songs_list = list(playlist_obj.songs.values('id', 'song_text', 'img_src'))
+        except Playlist.DoesNotExist:
+            request.session.pop('active_playlist_id', None)
+    
+    # Obtener todas las playlists para mostrar en la galería
+    all_playlists = Playlist.objects.all()
+    
     context = {
         'placeholder_text': 'Ingresa el nombre de tu playlist',
-        'playlist_name': None
+        'playlist_name': playlist_obj.name if playlist_obj else None,
+        'songs': json.dumps(songs_list),
+        'all_playlists': all_playlists
     }
     return render(request, '0_playlist_v.html', context)
 
@@ -184,21 +227,83 @@ def admin(request): #Administrador
 def create_playlist(request):
     if request.method == "POST":
         playlist_name = request.POST.get("playlist_name")
+        img_src = request.POST.get("img_src")
         
-        context = {
-            "playlist_name": playlist_name,
-            "placeholder_text": "Ingresa el nombre de tu playlist",
-            "songs": [
-                {"name": "Blinding Lights", "artist": "The Weeknd"},
-                {"name": "Talking to the Moon", "artist": "Bruno Mars"},
-                {"name": "Perfect", "artist": "Ed Sheeran"},
-            ]
-        }
-        return render(request, "0_playlist_v.html", context)
+        # Si no se proporciona imagen, usar una por defecto
+        if not img_src:
+            img_src = "/static/images/playlist1.jpg"
+        
+        # Crear la playlist en la base de datos
+        playlist_obj = Playlist.objects.create(name=playlist_name, img_src=img_src)
+        
+        # Guardar el ID de la playlist en la sesión
+        request.session['active_playlist_id'] = playlist_obj.id
+        
+        return redirect('playlistV')
     
-    # Si no se envió el formulario todavía
-    context = {
-        "playlist_name": None,
-        "placeholder_text": "Ingresa el nombre de tu playlist"
-    }
-    return render(request, "0_playlist_v.html", context)
+    return redirect('playlistV')
+
+def add_song(request):
+    if request.method == "POST":
+        playlist_id = request.session.get('active_playlist_id')
+        
+        if not playlist_id:
+            return JsonResponse({'error': 'No hay playlist activa'}, status=400)
+        
+        try:
+            playlist_obj = Playlist.objects.get(id=playlist_id)
+            song_text = request.POST.get('song_text')
+            img_src = request.POST.get('img_src')
+            
+            # Crear o obtener la canción (puede existir en otras playlists)
+            song, created = Song.objects.get_or_create(
+                song_text=song_text,
+                defaults={'img_src': img_src}
+            )
+            
+            # Actualizar img_src si la canción ya existía pero con otra imagen
+            if not created and song.img_src != img_src:
+                song.img_src = img_src
+                song.save()
+            
+            # Verificar si la canción ya está en esta playlist
+            if playlist_obj.songs.filter(id=song.id).exists():
+                return JsonResponse({'error': 'La canción ya existe en la playlist'}, status=400)
+            
+            # Agregar la canción a la playlist
+            playlist_obj.songs.add(song)
+            
+            return JsonResponse({
+                'success': True,
+                'song_id': song.id,
+                'song_text': song.song_text,
+                'img_src': song.img_src
+            })
+            
+        except Playlist.DoesNotExist:
+            return JsonResponse({'error': 'Playlist no encontrada'}, status=404)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def remove_song(request):
+    if request.method == "POST":
+        song_id = request.POST.get('song_id')
+        playlist_id = request.session.get('active_playlist_id')
+        
+        if not playlist_id:
+            return JsonResponse({'error': 'No hay playlist activa'}, status=400)
+        
+        try:
+            playlist_obj = Playlist.objects.get(id=playlist_id)
+            song = Song.objects.get(id=song_id)
+            
+            # Remover la canción de la playlist (no la elimina de la BD)
+            playlist_obj.songs.remove(song)
+            
+            return JsonResponse({'success': True})
+        except Playlist.DoesNotExist:
+            return JsonResponse({'error': 'Playlist no encontrada'}, status=404)
+        except Song.DoesNotExist:
+            return JsonResponse({'error': 'Canción no encontrada'}, status=404)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)

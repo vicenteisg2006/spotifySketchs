@@ -42,7 +42,13 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card p-3 mb-4">
-                    <h5 class="card-title">Monthly Streams Trend</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Monthly Trend</h5>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-success active" id="btnStreams" onclick="showStreams()">Streams</button>
+                            <button type="button" class="btn btn-sm btn-outline-success" id="btnListeners" onclick="showListeners()">Oyentes</button>
+                        </div>
+                    </div>
                     <canvas id="streamsChart"></canvas>
                     <!-- <canvas id="continentalChart" class="mt-4"></canvas> -->
                 </div>
@@ -81,7 +87,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card p-3 mb-4">
-                    <h5 class="card-title">Streams por Continente segun Mes</h5>
+                    <h5 class="card-title">Por Continente segun Mes</h5>
                     <canvas id="continentalChart" class="mt-4"></canvas>
                 </div>
             </div>
@@ -105,33 +111,49 @@
 
     <script>
         const streams_chart = JSON.parse('{{ streams_chart|escapejs }}');
+        const listeners_chart = JSON.parse('{{ listeners_chart|escapejs }}');
         const continental_data = JSON.parse('{{ continental_data|escapejs }}');
+        const continental_listeners_data = JSON.parse('{{ continental_listeners_data|escapejs }}');
 
         const ctx1 = document.getElementById('streamsChart');
         const ctx2 = document.getElementById('continentalChart');
 
-        new Chart(ctx1, {
-            type: 'line',
-            data: {
-                labels: streams_chart.labels,
-                datasets: [{
-                    label: 'STREAMS',
-                    data: streams_chart.values,
-                    borderColor: '#1db954',
-                    tension: 0.3,
-                    fill: true,
-                    backgroundColor: 'rgba(29,185,84,0.1)'
+        let mainChart = null;
+        let continentalChart = null;
+        let currentMode = 'streams';
+        let currentMonth = null;
+
+        function createMainChart(mode) {
+            if (mainChart) {
+                mainChart.destroy();
+            }
+
+            const data = mode === 'streams' ? streams_chart : listeners_chart;
+            const label = mode === 'streams' ? 'STREAMS' : 'OYENTES';
+            const tooltipSuffix = mode === 'streams' ? ' streams' : ' oyentes';
+
+            mainChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: label,
+                        data: data.values,
+                        borderColor: '#1db954',
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(29,185,84,0.1)'
                     }]
                 },
-            options: {
+                options: {
                     plugins: {
                         legend: { labels: { color: 'white' } },
                         tooltip: {
                             callbacks: {
-                                label: (ctx) => `${ctx.parsed.y.toLocaleString()} streams`
-                                }
+                                label: (ctx) => `${ctx.parsed.y.toLocaleString()}${tooltipSuffix}`
                             }
-                        },
+                        }
+                    },
                     scales: {
                         x: { ticks: { color: '#ccc' } },
                         y: { ticks: { color: '#ccc' } }
@@ -139,19 +161,20 @@
                     onHover: (event, chartElement) => {
                         if (chartElement.length > 0) {
                             const index = chartElement[0].index;
-                            const month = streams_chart.labels[index];
-                            updateContinentalChart(month);
-                            }
+                            const month = data.labels[index];
+                            currentMonth = month;
+                            updateContinentalChart(month, currentMode);
                         }
                     }
-        });
+                }
+            });
+        }
 
-        let continentalChart =  null;
-
-        function updateContinentalChart(month) {
-            const data = continental_data[month];
+        function updateContinentalChart(month, mode) {
+            const data = mode === 'streams' ? continental_data[month] : continental_listeners_data[month];
             const labels = Object.keys(data);
             const values = Object.values(data);
+            const label = mode === 'streams' ? 'Streams' : 'Oyentes';
 
             if (continentalChart) {
                 continentalChart.destroy();
@@ -162,27 +185,44 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                            label: `${month}`,
-                            data: values,
-                            backgroundColor: '#1db954'
-                        }]
-                    },
+                        label: `${month} - ${label}`,
+                        data: values,
+                        backgroundColor: '#1db954'
+                    }]
+                },
                 options: {
                     plugins: {
                         legend: { labels: { color: 'white' } },
                         title: {
                             display: true,
-
                             color: 'white',
-                            }
-                        },
+                        }
+                    },
                     scales: {
                         x: { ticks: { color: '#ccc' } },
                         y: { ticks: { color: '#ccc' } }
-                        }
                     }
-                });
-            }
+                }
+            });
+        }
+
+        function showStreams() {
+            currentMode = 'streams';
+            document.getElementById('btnStreams').classList.add('active');
+            document.getElementById('btnListeners').classList.remove('active');
+            createMainChart('streams');
+        }
+
+        function showListeners() {
+            currentMode = 'listeners';
+            document.getElementById('btnListeners').classList.add('active');
+            document.getElementById('btnStreams').classList.remove('active');
+            createMainChart('listeners');
+        }
+
+
+        // Inicializar el gráfico principal
+        createMainChart('streams');
 
     </script>
 
