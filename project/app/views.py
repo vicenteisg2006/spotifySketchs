@@ -89,6 +89,13 @@ def artistV(request): #Variante artista -> usando BaseKA
             {'name': 'New Rules', 'streams': 200000},
             {'name': 'Hallucinate', 'streams': 100000},
             ],
+        'top_viewers': [
+            {'name': 'User1', 'streams': 15000},
+            {'name': 'User2', 'streams': 12000},
+            {'name': 'User3', 'streams': 10000},
+            {'name': 'User4', 'streams': 8000},
+            {'name': 'User5', 'streams': 5000},
+            ],
         'streams_chart': json.dumps(streams_chart), #jsoneado
         'continental_data': json.dumps(continental_data), #jsoneado
     }
@@ -97,6 +104,30 @@ def artistV(request): #Variante artista -> usando BaseKA
 
 def annemarie(request): #prototipo vicente 
     return render(request, 'am.html')
+
+def artist_songs(request): #Vista de todas las canciones del artista
+    context = {
+        'artist_name': 'Dua Lipa',
+        'total_songs': 45,
+        'songs': [
+            {'name': 'Levitating', 'album': 'Future Nostalgia', 'duration': '3:23', 'streams': 500000, 'release_date': '2020-03-27'},
+            {'name': 'Don\'t Start Now', 'album': 'Future Nostalgia', 'duration': '3:03', 'streams': 400000, 'release_date': '2019-11-01'},
+            {'name': 'Dance the Night', 'album': 'Barbie The Album', 'duration': '2:57', 'streams': 300000, 'release_date': '2023-05-25'},
+            {'name': 'New Rules', 'album': 'Dua Lipa', 'duration': '3:29', 'streams': 200000, 'release_date': '2017-07-07'},
+            {'name': 'Hallucinate', 'album': 'Future Nostalgia', 'duration': '3:27', 'streams': 100000, 'release_date': '2020-03-27'},
+            {'name': 'Physical', 'album': 'Future Nostalgia', 'duration': '3:13', 'streams': 250000, 'release_date': '2020-01-31'},
+            {'name': 'Break My Heart', 'album': 'Future Nostalgia', 'duration': '3:41', 'streams': 180000, 'release_date': '2020-03-25'},
+            {'name': 'One Kiss', 'album': 'One Kiss', 'duration': '3:34', 'streams': 350000, 'release_date': '2018-04-06'},
+            {'name': 'IDGAF', 'album': 'Dua Lipa', 'duration': '3:38', 'streams': 220000, 'release_date': '2018-01-12'},
+            {'name': 'Cold Heart', 'album': 'Cold Heart', 'duration': '3:22', 'streams': 280000, 'release_date': '2021-08-13'},
+            {'name': 'Love Again', 'album': 'Future Nostalgia', 'duration': '4:18', 'streams': 150000, 'release_date': '2020-03-27'},
+            {'name': 'Pretty Please', 'album': 'Future Nostalgia', 'duration': '3:15', 'streams': 90000, 'release_date': '2020-03-27'},
+            {'name': 'Be the One', 'album': 'Dua Lipa', 'duration': '3:23', 'streams': 170000, 'release_date': '2015-10-30'},
+            {'name': 'Blow Your Mind', 'album': 'Dua Lipa', 'duration': '3:32', 'streams': 140000, 'release_date': '2016-08-26'},
+            {'name': 'Hotter Than Hell', 'album': 'Dua Lipa', 'duration': '3:08', 'streams': 130000, 'release_date': '2016-06-10'},
+        ],
+    }
+    return render(request, 'artist_songs.html', context)
 
 
 
