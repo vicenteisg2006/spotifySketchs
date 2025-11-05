@@ -89,6 +89,13 @@ def artistV(request): #Variante artista -> usando BaseKA
             {'name': 'New Rules', 'streams': 200000},
             {'name': 'Hallucinate', 'streams': 100000},
             ],
+        'top_viewers': [
+            {'name': 'User1', 'streams': 15000},
+            {'name': 'User2', 'streams': 12000},
+            {'name': 'User3', 'streams': 10000},
+            {'name': 'User4', 'streams': 8000},
+            {'name': 'User5', 'streams': 5000},
+            ],
         'streams_chart': json.dumps(streams_chart), #jsoneado
         'continental_data': json.dumps(continental_data), #jsoneado
     }
