@@ -28,9 +28,7 @@ input.form-control {
     overflow: hidden;
 }
 
-#carouselExampleAutoplaying .carousel-inner {
-    height: 800px;
-}
+
 
 #carouselExampleAutoplaying .carousel-item {
     height: 100%;

@@ -1,28 +1,7 @@
 <!-- LLamada a baseK -->
 {% extends "baseK.html" %}
 {% block title %} Create Playlist {% endblock %}
-{% block extra_head %} <script>
-const slider = document.querySelector('.galeria-deslizable-wrapper-inner-cards');
-let isDown = false;
-let startX;
-let scrollLeft;
-
-slider.addEventListener('mousedown', (e) => {
-    isDown = true;
-    slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
-});
-slider.addEventListener('mouseleave', () => { isDown = false; });
-slider.addEventListener('mouseup', () => { isDown = false; });
-slider.addEventListener('mousemove', (e) => {
-    if(!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 1;
-    slider.scrollLeft = scrollLeft - walk;
-});
-</script>
+{% block extra_head %}
 {% endblock %}
 <!-- Contenido especifico Playlist -->
 {% block content %}
@@ -48,143 +27,173 @@ slider.addEventListener('mousemove', (e) => {
                 </div>
             </div>
 
-              </div>
-        </div><h2 class="font-weight-bold p-4 text-center">your favorite artists</h2>
-
-<div class="galeria-deslizable-wrapper-inner-cards">
-    <div class="galeria-deslizable-cards">
-
-        <div class="card-item text-center">
-            <div class="card bg-dark border-0">
-                <img src="https://routenote.com/blog/wp-content/uploads/2024/08/1.-The-Weeknd.jpeg" class="card-img-top rounded-circle">
-                <div class="card-body">
-                    <p class="card-text">The Weeknd</p>
-                </div>
-            </div>
         </div>
-
-        <div class="card-item text-center">
-            <div class="card bg-dark border-0">
-                <img src="https://routenote.com/blog/wp-content/uploads/2024/08/2.-Bruno-Mars.jpeg" class="card-img-top rounded-circle">
-                <div class="card-body">
-                    <p class="card-text">Bruno Mars</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-item text-center">
-            <div class="card bg-dark border-0">
-                <img src="https://routenote.com/blog/wp-content/uploads/2025/02/3.-Ed-Sheeran.jpeg" class="card-img-top rounded-circle">
-                <div class="card-body">
-                    <p class="card-text">Ed Sheeran</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-item text-center">
-            <div class="card bg-dark border-0">
-                <img src="https://routenote.com/blog/wp-content/uploads/2025/02/4.-Justin-Bieber.jpeg" class="card-img-top rounded-circle">
-                <div class="card-body">
-                    <p class="card-text">Justin Bieber</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-item text-center">
-            <div class="card bg-dark border-0">
-                <img src="https://routenote.com/blog/wp-content/uploads/2025/01/3.-Lady-Gaga.jpeg" class="card-img-top rounded-circle">
-                <div class="card-body">
-                    <p class="card-text">Lady Gaga</p>
-                </div>
-            </div>
-        </div>
-
     </div>
-</div>
 
 
-       <!-- fila 2-->
-<div class="row">
+    <!-- Contenedor de canciones y recomendaciones -->
+    <div class="container mt-5">
+        <div class="row">
+            <!-- columna 1 -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Songs</h5>
 
-    <!-- columna 1-->
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Songs</h5>
+                        <ul class="list-group list-group-flush">
 
-                <ul class="list-group list-group-flush">
+                            <!-- SONG ITEM -->
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="https://picsum.photos/seed/song1/80" class="rounded" width="48" height="48">
+                                    <span>Blinding Lights - The Weeknd</span>
+                                </div>
+                                <button class="btn btn-success btn-sm rounded-pill px-3">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </li>
 
-                    <!-- SONG ITEM -->
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="https://picsum.photos/seed/song1/80" class="rounded" width="48" height="48">
-                            <span>Blinding Lights - The Weeknd</span>
-                        </div>
-                        <button class="btn btn-success btn-sm rounded-pill px-3">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                    </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="https://picsum.photos/seed/song2/80" class="rounded" width="48" height="48">
+                                    <span>Talking to the Moon - Bruno Mars</span>
+                                </div>
+                                <button class="btn btn-success btn-sm rounded-pill px-3">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </li>
 
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="https://picsum.photos/seed/song2/80" class="rounded" width="48" height="48">
-                            <span>Talking to the Moon - Bruno Mars</span>
-                        </div>
-                        <button class="btn btn-success btn-sm rounded-pill px-3">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                    </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="https://picsum.photos/seed/song3/80" class="rounded" width="48" height="48">
+                                    <span>Perfect - Ed Sheeran</span>
+                                </div>
+                                <button class="btn btn-success btn-sm rounded-pill px-3">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </li>
 
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="https://picsum.photos/seed/song3/80" class="rounded" width="48" height="48">
-                            <span>Perfect - Ed Sheeran</span>
-                        </div>
-                        <button class="btn btn-success btn-sm rounded-pill px-3">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                    </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-                </ul>
+            <!-- columna 2 -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Recommendations</h5>
+                        <ul class="list-group list-group-flush">
+
+                            <!-- RECO ITEM -->
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="https://picsum.photos/seed/song4/80" class="rounded" width="48" height="48">
+                                    <span>Hold On - Justin Bieber</span>
+                                </div>
+                                <button class="btn btn-success btn-sm rounded-pill px-3">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="https://picsum.photos/seed/song5/80" class="rounded" width="48" height="48">
+                                    <span>Rain On Me - Lady Gaga</span>
+                                </div>
+                                <button class="btn btn-success btn-sm rounded-pill px-3">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- columna 2-->
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Recommendations</h5>
-                <ul class="list-group list-group-flush">
-
-                    <!-- RECO ITEM -->
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="https://picsum.photos/seed/song4/80" class="rounded" width="48" height="48">
-                            <span>Hold On - Justin Bieber</span>
-                        </div>
-                        <button class="btn btn-success btn-sm rounded-pill px-3">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                    </li>
-
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="https://picsum.photos/seed/song5/80" class="rounded" width="48" height="48">
-                            <span>Rain On Me - Lady Gaga</span>
-                        </div>
-                        <button class="btn btn-success btn-sm rounded-pill px-3">
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                    </li>
-
-                </ul>
+        <!-- Playlists Favoritas -->
+        <h2 class="font-weight-bold p-4 text-center">Tus Playlists Favoritas</h2>
+        <div class="galeria-deslizable-wrapper my-4">
+            <div class="galeria-deslizable-wrapper-inner-cards">
+                <div class="galeria-deslizable">
+                    <div class="foto-item text-center">
+                        <img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2">
+                    </div>
+    
+                    <div class="foto-item text-center">
+                        <img src="{% static 'images/playlist3.jpg' %}" class="foto-cuadrada mb-2">
+                    </div>
+    
+                    <div class="foto-item text-center">
+                        <img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2">
+                    </div>
+    
+                    <div class="foto-item text-center">
+                        <img src="{% static 'images/playlist7.jpg' %}" class="foto-cuadrada mb-2">
+                    </div>
+    
+                    <div class="foto-item text-center">
+                        <img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2">
+                    </div>
+    
+                    <div class="foto-item text-center">
+                        <img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2">
+                    </div>
+    
+                    <div class="foto-item text-center">
+                        <img src="{% static 'images/playlist5.jpg' %}" class="foto-cuadrada mb-2">
+                    </div>
+    
+                    <div class="foto-item text-center">
+                        <img src="{% static 'images/playlist1.jpg' %}" class="foto-cuadrada mb-2">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    
 
-</div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    
+    <script>
+        // Funcionalidad de arrastre para las galerías
+        function addDragFunctionality(selector) {
+            const sliders = document.querySelectorAll(selector);
+            
+            sliders.forEach(slider => {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
 
+                slider.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    startX = e.pageX - slider.offsetLeft;
+                    scrollLeft = slider.scrollLeft;
+                });
+
+                slider.addEventListener('mouseleave', () => {
+                    isDown = false;
+                });
+
+                slider.addEventListener('mouseup', () => {
+                    isDown = false;
+                });
+
+                slider.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 2; // Multiplicador para velocidad de scroll
+                    slider.scrollLeft = scrollLeft - walk;
+                });
+            });
+        }
+
+        // Aplicar funcionalidad a todas las galerías
+        addDragFunctionality('.galeria-deslizable-wrapper-inner');
+        addDragFunctionality('.galeria-deslizable-wrapper-inner-cards');
+    </script>
 
 {% endblock %}
 <!-- FIN Contenido-->
