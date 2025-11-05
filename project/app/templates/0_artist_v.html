@@ -44,7 +44,7 @@
                 <div class="card p-3 mb-4">
                     <h5 class="card-title">Monthly Streams Trend</h5>
                     <canvas id="streamsChart"></canvas>
-                    <canvas id="continentalChart" class="mt-4"></canvas>
+                    <!-- <canvas id="continentalChart" class="mt-4"></canvas> -->
                 </div>
             </div>
 
@@ -56,6 +56,44 @@
                         {% for song in top_songs %}
                         <li class="list-group-item">
                             {{ song.name }} — {{ song.streams|intcomma }} streams
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- <div class="col-md-4 text-center">
+                <div class="card p-3 mb-4">
+                    <h5 class="card-title">Top Listeners</h5>
+
+                    <ul class="list-group list-group-flush">
+                        {% for user in top_viewers %}
+                        <li class="list-group-item">
+                            {{ user.name }} - {{ user.streams|intcomma }} times played
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div> -->
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card p-3 mb-4">
+                    <h5 class="card-title">Streams por Continente segun Mes</h5>
+                    <canvas id="continentalChart" class="mt-4"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="card p-3 mb-4">
+                    <h5 class="card-title">Top Listeners</h5>
+
+                    <ul class="list-group list-group-flush">
+                        {% for user in top_viewers %}
+                        <li class="list-group-item">
+                            {{ user.name }} - {{ user.streams|intcomma }} times played
                         </li>
                         {% endfor %}
                     </ul>
@@ -124,7 +162,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                            label: `Streams por Continente en ${month}`,
+                            label: `${month}`,
                             data: values,
                             backgroundColor: '#1db954'
                         }]
@@ -134,7 +172,7 @@
                         legend: { labels: { color: 'white' } },
                         title: {
                             display: true,
-                            text: `Streams por Continente en ${month}`,
+
                             color: 'white',
                             }
                         },
