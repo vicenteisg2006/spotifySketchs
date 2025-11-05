@@ -16,14 +16,31 @@
             display: flex;
             justify-content: center;
             align-items: center;
+
+            background-image: url("{% static 'images/Spotify_FTR_Header.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
         .login-card {
-            background: white;
+            background: rgb(255, 255, 255);
             padding: 2rem;
             border-radius: 1rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 400px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        input.form-control::placeholder {
+            color: #000000 !important;
+            opacity: 1;
+        }   
+        input.form-control:focus {
+            color: #000000;
+        }
+        input.form-control:valid:not(:focus) {
+            color: #000000;
         }
     </style>
 </head>
@@ -49,16 +66,6 @@
             <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
     </div>
-    
-
-
-
-
-
-
-
-
-
     
 </body>
 </html>
