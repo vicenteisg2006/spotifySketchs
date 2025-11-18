@@ -36,3 +36,23 @@ class PlaylistSong(models.Model):
     def __str__(self):
         return f"{self.song.song_text} en {self.playlist.name}"
 
+
+
+# ========== modelos Vicente ==========
+class PERFIL(models.Model):
+    nombre = models.CharField(max_length=10, unique=True)
+    password = models.CharField(max_length=10)
+    rol = models.CharField(max_length=15, choices= 
+        [('user', 'User'), 
+         ('artist', 'Artist'), 
+         ('administrator', 'Administrator'), 
+         ('moderator', 'Moderator')
+        ])
+    
+
+
+class alertaMODERADOR(models.Model):
+    emisor = models.ForeignKey(PERFIL, on_delete=models.CASCADE, related_name='alertas_enviadas')
+    receptor = models.ForeignKey(PERFIL, on_delete=models.CASCADE, related_name='alertas_recibidas')
+    mensajeAlerta = models.TextField()
+    fechaEnvio = models.DateTimeField(auto_now_add=True)

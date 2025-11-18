@@ -1,5 +1,6 @@
 from django import forms
 from .models import Playlist, Song
+from .models import PERFIL, alertaMODERADOR
 
 class PlaylistForm(forms.ModelForm):
     class Meta:
@@ -38,3 +39,11 @@ class SongForm(forms.ModelForm):
             'song_text': 'Canción',
             'img_src': 'Imagen'
         }
+
+# ========== formularios Vicente ==========
+class alertaMODERADORForm(forms.ModelForm):
+    receptor = forms.ModelChoiceField(queryset=PERFIL.objects.all())
+
+    class Meta:
+        model = alertaMODERADOR
+        fields = ['receptor', 'mensajeAlerta']

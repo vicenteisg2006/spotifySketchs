@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models import PERFIL
 from .models import Playlist, Song, PlaylistSong
 
 # Register your models here.
@@ -34,3 +35,5 @@ class PlaylistSongAdmin(admin.ModelAdmin):
     list_filter = ['playlist', 'added_at']
     search_fields = ['playlist__name', 'song__song_text']
     ordering = ['playlist', 'order', 'added_at']
+
+admin.site.register(PERFIL)
