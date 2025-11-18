@@ -74,21 +74,6 @@
                         Spotify
                     </a>
 
-                    <!-- 
-                    Logo Home, redirige pag principal 
-                    <a href="{% url 'user' %}" class="btn btn-dark rounded-circle" role="button" aria-label="Inicio">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
-                            <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
-                        </svg>
-                    </a>
-
-                    Boton Playlist, redirige a pag playlist 
-                    <a href="{% url 'playlist'%}">
-                        <button type="button" class="btn btn-success btn-dark">create playlist</button>
-                    </a>
-                    -->
-                
-
                 </div>
                 
                 <!-- Buscador + boton explorar -->
@@ -99,6 +84,7 @@
                     <input class="form-control me-2 rounded-pill btn-outline-light" type="search" placeholder="Que quieres escuchar?" aria-label="Search" style="padding-left: 40px; background-color: #1f2020; border: none; color: #1ed760b3;"/>
                     <button class="btn btn-outline-light" type="submit">Explorar</button>
                 </form>
+                
             </div>
         </nav>
 
@@ -121,8 +107,8 @@
             <!-- SideBar -->
             <div id= "sidebar" class= "collapsed">
                 <h4 class= "text-center py-3 border-bottom">Menú</h4>
-                <a href= "{% url 'userV' %}" class="text-center">Inicio</a>
-                <a href= "{% url 'playlistV'%}" class="text-center">Playlist</a>
+                <a href= "{% url 'userV' perfil_id=perfil.id %}" class="text-center">Inicio</a>
+                <a href= "{% url 'playlistV' perfil_id=perfil.id %}" class="text-center">Playlist</a>
                 <a href= "{% url 'login' %}" class="text-center">Log out</a>
             </div>
 

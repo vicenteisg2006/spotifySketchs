@@ -1,37 +1,78 @@
+#Imports generales
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import Playlist, Song, PlaylistSong
+from django.db.models import Count
 import json
+import datetime
+
+#Imports model y form para mensajes moderador
+from .models import PERFIL, alertaMODERADOR
+from .forms import alertaMODERADORForm
+
+#Imports modelos para playlist
+from .models import Playlist, Song, PlaylistSong
 
 
 
 # ========== LOGIN ==========
 def loginPage(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        form_type = request.POST.get("form_type")
+
+        if form_type == "login":
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+
+            try:
+                perfil = PERFIL.objects.get(nombre=username, password=password)
+                if perfil.rol == "user":
+                    return redirect("userV", perfil_id = perfil.id)
+                elif perfil.rol == "artist":
+                    return redirect("artistV", perfil_id = perfil.id)
+                elif perfil.rol == "administrator":
+                    return redirect("dashboard",)
+                elif perfil.rol == "moderator":
+                    return redirect("moder", perfil_id = perfil.id)
+                
+            except PERFIL.DoesNotExist:
+                error_msg = "Invalid credentials, please try again."
+                return render(request, "0_login/login.html", {"error": error_msg})
 
 
-        #Segun las contraseñas que recibe, redirige a un html
-        if username == "user" and password == "user123":
-            return redirect("user")                                         #Usuario
-        elif username == "artist" and password == "artist123":
-            return redirect("artist")                                        #Artista Generico
-        elif username == "admin" and password == "admin123":
-            return redirect("dashboard")                                  #Administrador
-        elif username == "anne-marie" and password == "am123":
-            return redirect("AnneMarie")                                   #Anne-Marie
-        elif username == "userV" and password == "userV123":
-            return redirect("userV")                                       #Variante usuario -> usando BaseK
-        elif username == "artistV" and password == "artistV123":
-            return redirect("artistV")                                      #Variante artista -> usando BaseKA
-        
-        #Mensaje de error
-        else:
-            error_msg = "Invalid credentials, please try again."
-            return render(request, "login.html", {"error": error_msg})
+            # #Segun las contraseñas que recibe, redirige a un html
+            # if username == "user" and password == "user123":
+            #     return redirect("user")                                         #Usuario >>> BORRAR
+            # elif username == "artist" and password == "artist123":
+            #     return redirect("artist")                                        #Artista Generico >>> BORRAR
+            # elif username == "admin" and password == "admin123":
+            #     return redirect("dashboard")                                  #Administrador
+            # elif username == "anne-marie" and password == "am123":
+            #     return redirect("AnneMarie")                                   #Anne-Marie >>> BORRAR
+            # elif username == "userV" and password == "userV123":
+            #     return redirect("userV")                                       #Variante usuario -> usando BaseK
+            # elif username == "artistV" and password == "artistV123":
+            #     return redirect("artistV")                                      #Variante artista -> usando BaseKA
+            # elif username == "moder" and password == "moder123":
+            #     return redirect("moder")                                       #Moderador -> usando BaseKM
+            
+            # #Mensaje de error
+            # else:
+            #     error_msg = "Invalid credentials, please try again."
+            #     return render(request, "login.html", {"error": error_msg})
 
-    return render(request, 'login.html')
+        elif form_type == "register":
+            new_username = request.POST.get("new_username")
+            new_password = request.POST.get("new_password")
+            new_rol = request.POST.get("new_rol")
+
+            if PERFIL.objects.filter(nombre=new_username).exists():
+                error_msg = "Username already exists. Please choose a different one."
+                return render(request, "0_login/login.html", {"error": error_msg})
+            else:
+                PERFIL.objects.create(nombre=new_username, password=new_password, rol=new_rol)
+                success_msg = "Registration successful! You can now log in."
+                return render(request, "0_login/login.html", {"success": success_msg})
+    return render(request, '0_login/login.html')
 
 
 
@@ -60,7 +101,8 @@ def artistPage(request):
         }
     return render(request, 'artist.html', context)
 
-def artistV(request): #Variante artista -> usando BaseKA
+def artistV(request, perfil_id): #Variante artista -> usando BaseKA
+    perfil = PERFIL.objects.get(id=perfil_id)
     #Datos para jsonear
     streams_chart = {
         'labels': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
@@ -153,14 +195,16 @@ def artistV(request): #Variante artista -> usando BaseKA
         'continental_data': json.dumps(continental_data), #jsoneado
         'continental_listeners_data': json.dumps(continental_listeners_data), #jsoneado
         'albums_chart': json.dumps(albums_chart), #jsoneado
+        'perfil': perfil,
     }
-    return render(request, '0_artist_v.html', context)
+    return render(request, '2_artista/1_artist_v.html', context)
 
 
 def annemarie(request): #prototipo vicente 
     return render(request, 'am.html')
 
-def artist_songs(request): #Vista de todas las canciones del artista
+def artist_songs(request, perfil_id): #Vista de todas las canciones del artista
+    perfil = PERFIL.objects.get(id=perfil_id)
     songs = [
         {'name': 'Levitating', 'album': 'Future Nostalgia', 'duration': '3:23', 'streams': 500000, 'release_date': '2020-03-27'},
         {'name': 'Don\'t Start Now', 'album': 'Future Nostalgia', 'duration': '3:03', 'streams': 400000, 'release_date': '2019-11-01'},
@@ -187,8 +231,9 @@ def artist_songs(request): #Vista de todas las canciones del artista
         'total_songs': len(songs),
         'total_streams': total_streams,
         'songs': songs,
+        'perfil': perfil,
     }
-    return render(request, 'artist_songs.html', context)
+    return render(request, '2_artista/artist_songs.html', context)
 
 
 
@@ -196,11 +241,18 @@ def artist_songs(request): #Vista de todas las canciones del artista
 
 
 # ========== USUARIOS ==========
-def userPage(request): #Inicial
+def userPage(request): #Inicial - OBSOLETO
     return render(request, 'user.html')
 
-def userV(request): #Variante -> usando BaseK
-    return render(request, '0_user_v.html')
+def userV(request, perfil_id): #Variante -> usando BaseK
+    perfil = PERFIL.objects.get(id=perfil_id)
+    mensajes = alertaMODERADOR.objects.filter(receptor=perfil).order_by('-fechaEnvio')
+    context = {
+        'perfil': perfil,
+        'mensajes': mensajes,
+    }
+
+    return render(request, '1_usuario/1_user_v.html', context)
 
 
 
@@ -212,7 +264,9 @@ def userV(request): #Variante -> usando BaseK
 def playlist(request): #Playlist
     return render(request, 'playlist.html')
 
-def playlistV(request): #Variante playlist -> usando BaseK
+def playlistV(request, perfil_id): #Variante playlist -> usando BaseK
+    perfil = PERFIL.objects.get(id=perfil_id)
+
     # Verificar si se está cargando una playlist específica desde la galería
     load_playlist_id = request.GET.get('playlist_id')
     
@@ -240,9 +294,10 @@ def playlistV(request): #Variante playlist -> usando BaseK
         'placeholder_text': 'Ingresa el nombre de tu playlist',
         'playlist_name': playlist_obj.name if playlist_obj else None,
         'songs': json.dumps(songs_list),
-        'all_playlists': all_playlists
+        'all_playlists': all_playlists,
+        'perfil': perfil,
     }
-    return render(request, '0_playlist_v.html', context)
+    return render(request, '1_usuario/2_funcionPlaylist_v.html', context)
 
 
 
@@ -253,11 +308,258 @@ def playlistV(request): #Variante playlist -> usando BaseK
 
 # ========== ADMINISTRADOR ==========
 def admin(request): #Administrador
-    return render(request, 'admin.html')
+    return render(request, '3_admin/admin.html')
 
+def moder(request, perfil_id): #Moderador
+    perfil = PERFIL.objects.get(id=perfil_id)
 
+    context = {
+        'perfil': perfil,
+    }
+
+    return render(request, '4_moderador/1_moderHome.html', context)
+
+def prueba(request): #Prueba
+    return render(request, '4_moderador/prueba.html')
 
 # ========== COMPLEMENTOS ADMINISTRADOR ==========
+
+def get_moder_data(request, chart_id): #Datos para graficos moderador
+
+    grafico_1_data = {
+        'title' : 'Grafico 1',
+        'type': 'bar',
+        'labels': [],
+        'datasets': [],
+    }
+
+    grafico_2_data = {
+        'title' : 'Grafico 2',
+        'type': 'line',
+        'labels': [],
+        'datasets': [],
+    }
+
+    if chart_id == 'graph-card-1':
+
+        grafico_1_data = {
+            'title': 'Alertas por Continente',
+            'type': 'globe',
+            'data': [ 
+                {'title': 'Sudamérica', 'lat': -14.23, 'lon': -51.92, 'value': 150},
+                {'title': 'Europa', 'lat': 54.52, 'lon': 15.25, 'value': 100},
+                {'title': 'Asia', 'lat': 34.04, 'lon': 100.61, 'value': 80},
+                {'title': 'Norteamérica', 'lat': 54.52, 'lon': -105.25, 'value': 120},
+                {'title': 'África', 'lat': -0.02, 'lon': 17.15, 'value': 30},
+                {'title': 'Oceanía', 'lat': -25.27, 'lon': 133.77, 'value': 20}
+            ]
+        }
+        grafico_2_data = {
+            'title': 'Alertas en los últimos 6 meses',
+            'type': 'line',
+            'labels': ['Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago'],
+            'datasets': [{
+                'label': 'Total Alertas',
+                'data': [65, 59, 80, 81, 56, 120],
+                'borderColor': '#8EFAB4',
+                'tension': 0.2
+            }]
+        }
+
+    elif chart_id == 'graph-card-2':
+
+        grafico_1_data = {
+            'title': 'Baneos por Continente',
+            'type': 'globe',
+            'data': [
+                {'title': 'Sudamérica', 'lat': -14.23, 'lon': -51.92, 'value': 40},
+                {'title': 'Europa', 'lat': 54.52, 'lon': 15.25, 'value': 20},
+                {'title': 'Asia', 'lat': 34.04, 'lon': 100.61, 'value': 15},
+                {'title': 'Norteamérica', 'lat': 54.52, 'lon': -105.25, 'value': 30},
+                {'title': 'África', 'lat': -0.02, 'lon': 17.15, 'value': 5},
+                {'title': 'Oceanía', 'lat': -25.27, 'lon': 133.77, 'value': 2}
+            ]
+        }
+        grafico_2_data = {
+            'title': 'Baneos en los últimos 6 meses',
+            'type': 'line',
+            'labels': ['Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago'],
+            'datasets': [{
+                'label': 'Total Baneos',
+                'data': [10, 15, 8, 12, 18, 30],
+                'borderColor': '#FF6384',
+                'tension': 0.2
+            }]
+        }
+
+    elif chart_id == 'graph-card-3':
+
+        grafico_1_data = {
+            'title': 'Usuarios Moderados por Continente',
+            'type': 'globe',
+            'data': [
+                {'title': 'Sudamérica', 'lat': -14.23, 'lon': -51.92, 'value': 25},
+                {'title': 'Europa', 'lat': 54.52, 'lon': 15.25, 'value': 18},
+                {'title': 'Asia', 'lat': 34.04, 'lon': 100.61, 'value': 10},
+                {'title': 'Norteamérica', 'lat': 54.52, 'lon': -105.25, 'value': 20},
+                {'title': 'África', 'lat': -0.02, 'lon': 17.15, 'value': 3},
+                {'title': 'Oceanía', 'lat': -25.27, 'lon': 133.77, 'value': 1}
+            ]
+        }
+        grafico_2_data = {
+            'title': 'Usuarios Moderados en los últimos 6 meses',
+            'type': 'line',
+            'labels': ['Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago'],
+            'datasets': [{
+                'label': 'Usuarios Moderados',
+                'data': [5, 8, 6, 9, 10, 15],
+                'borderColor': '#36A2EB', # Azul
+                'tension': 0.2
+            }]
+        }
+    
+    elif chart_id == 'graph-card-4':
+
+        grafico_1_data = {
+            'title': 'Artistas Moderados por Continente',
+            'type': 'globe',
+            'data': [
+                {'title': 'Sudamérica', 'lat': -14.23, 'lon': -51.92, 'value': 15},
+                {'title': 'Europa', 'lat': 54.52, 'lon': 15.25, 'value': 12},
+                {'title': 'Asia', 'lat': 34.04, 'lon': 100.61, 'value': 5},
+                {'title': 'Norteamérica', 'lat': 54.52, 'lon': -105.25, 'value': 10},
+                {'title': 'África', 'lat': -0.02, 'lon': 17.15, 'value': 2},
+                {'title': 'Oceanía', 'lat': -25.27, 'lon': 133.77, 'value': 1}
+            ]
+        }
+        grafico_2_data = {
+            'title': 'Artistas Moderados en los últimos 6 meses',
+            'type': 'line',
+            'labels': ['Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago'],
+            'datasets': [{
+                'label': 'Artistas Moderados',
+                'data': [5, 7, 2, 3, 8, 15],
+                'borderColor': '#FFCE56', # Amarillo
+                'tension': 0.2
+            }]
+        }
+
+    elif chart_id == 'graph-card-5':
+
+        grafico_1_data = {
+            'title': 'Alertas Pendientes por Continente',
+            'type': 'globe',
+            'data': [
+                {'title': 'Sudamérica', 'lat': -14.23, 'lon': -51.92, 'value': 10},
+                {'title': 'Europa', 'lat': 54.52, 'lon': 15.25, 'value': 14},
+                {'title': 'Asia', 'lat': 34.04, 'lon': 100.61, 'value': 5},
+                {'title': 'Norteamérica', 'lat': 54.52, 'lon': -105.25, 'value': 13},
+                {'title': 'África', 'lat': -0.02, 'lon': 17.15, 'value': 6},
+                {'title': 'Oceanía', 'lat': -25.27, 'lon': 133.77, 'value': 22}
+            ]
+        }
+        grafico_2_data = {
+            'title': 'Detalle Alertas Pendientes',
+            'type': 'bar',
+            'labels': ['Mal Uso', 'Hackeo', 'Pirateo', 'Cont. Inapropiado'],
+            'options': { # Opciones para apilar
+                'scales': {
+                    'x': { 'stacked': True },
+                    'y': { 'stacked': True }
+                }
+            },
+            'datasets': [
+                {
+                    'label': 'Reportes de Usuario',
+                    'data': [12, 19, 3, 5],
+                    'backgroundColor': '#36A2EB', # Azul
+                },
+                {
+                    'label': 'Reportes de Artista',
+                    'data': [8, 10, 2, 4],
+                    'backgroundColor': '#FFCE56', # Amarillo
+                }
+            ]
+        }
+
+    elif chart_id == 'graph-card-6':
+
+        grafico_1_data = {
+            'title': 'Alertas Realizadas por Continente',
+            'type': 'globe',
+            'data': [
+                {'title': 'Sudamérica', 'lat': -14.23, 'lon': -51.92, 'value': 23},
+                {'title': 'Europa', 'lat': 54.52, 'lon': 15.25, 'value': 17},
+                {'title': 'Asia', 'lat': 34.04, 'lon': 100.61, 'value': 6},
+                {'title': 'Norteamérica', 'lat': 54.52, 'lon': -105.25, 'value': 21},
+                {'title': 'África', 'lat': -0.02, 'lon': 17.15, 'value': 3},
+                {'title': 'Oceanía', 'lat': -25.27, 'lon': 133.77, 'value': 11}
+            ]
+        }
+        grafico_2_data = {
+            'title': 'Detalle Alertas Finalizadas',
+            'type': 'bar',
+            'labels': ['Mal Uso', 'Hackeo', 'Pirateo', 'Cont. Inapropiado'],
+            'options': { 'scales': { 'x': { 'stacked': True }, 'y': { 'stacked': True } } },
+            'datasets': [
+                {
+                    'label': 'Reportes de Usuario',
+                    'data': [120, 190, 30, 50],
+                    'backgroundColor': '#36A2EB',
+                },
+                {
+                    'label': 'Reportes de Artista',
+                    'data': [80, 100, 20, 40],
+                    'backgroundColor': '#FFCE56',
+                }
+            ]
+        }
+
+    else:
+        grafico_1_data['title'] = 'error'
+        grafico_2_data['title'] = 'error'
+
+    data = {
+        'grafico_1_data': grafico_1_data,
+        'grafico_2_data': grafico_2_data,
+    }
+
+    return JsonResponse(data)
+
+
+def alert(request, perfil_id): #Alertas
+    perfil = PERFIL.objects.get(id=perfil_id)
+
+    if request.method == "POST":
+        form = alertaMODERADORForm(request.POST)
+        if form.is_valid():
+            mensaje = form.save(commit=False)
+            mensaje.emisor = PERFIL.objects.get(nombre=request.session['moderador'])  # Asignar un emisor predeterminado
+            mensaje.save()
+            return redirect('alert')
+    else:
+        form = alertaMODERADORForm()
+
+    
+    context = {
+        'perfil': perfil,
+        'form': form,
+    }
+
+    return render(request, '4_moderador/2_funcionAlert.html', context)
+
+def moderate(request, perfil_id): #banear
+    perfil = PERFIL.objects.get(id=perfil_id)
+
+    context = {
+        'perfil': perfil,
+    }
+
+    return render(request, '4_moderador/2_funcionBan.html', context)
+
+
+
+
 
 
 # ========== PLAYLIST ==========

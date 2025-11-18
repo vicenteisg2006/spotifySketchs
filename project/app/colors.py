@@ -1,6 +1,6 @@
 #Paletas de colores
 
-Paleta_1 = {
+Paleta_1 = { #se ve horrible sjwkjjsjswj
     "color01": "#957F74",
     "color02": "#A99479",
     "color03": "#BF9F76",
