@@ -35,4 +35,7 @@ urlpatterns = [
     path('create-playlist/', views.create_playlist, name='create_playlist'),
     path('add-song/', views.add_song, name='add_song'),
     path('remove-song/', views.remove_song, name='remove_song'),
+
+    path('userStatsV/<int:perfil_id>', views.userStatsV, name='userStatsV'),
+
 ]

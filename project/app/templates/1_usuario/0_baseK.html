@@ -108,9 +108,11 @@
             <div id= "sidebar" class= "collapsed">
                 <h4 class= "text-center py-3 border-bottom">Menú</h4>
                 <a href= "{% url 'userV' perfil_id=perfil.id %}" class="text-center">Inicio</a>
+                <a href="{% url 'userStatsV' perfil_id=perfil.id %}" class="text-center">Dashboard</a>
                 <a href= "{% url 'playlistV' perfil_id=perfil.id %}" class="text-center">Playlist</a>
                 <a href= "{% url 'login' %}" class="text-center">Log out</a>
             </div>
+
 
             <!-- Contenido -->
             <main style= "width: 100%;" id="content">

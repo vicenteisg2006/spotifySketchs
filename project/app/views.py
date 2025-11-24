@@ -646,3 +646,12 @@ def remove_song(request):
             return JsonResponse({'error': 'Canción no encontrada'}, status=404)
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def userStatsV(request, perfil_id):
+    perfil = PERFIL.objects.get(id=perfil_id)
+    mensajes = alertaMODERADOR.objects.filter(receptor=perfil).order_by('-fechaEnvio')
+
+    return render(request, "1_usuario/dashboardUser.html", {
+        'perfil': perfil,
+        'mensajes': mensajes
+    })
